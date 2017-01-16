@@ -1,0 +1,5 @@
+1. Import wg_wolke.sql into phpMyAdmin
+2. Select table pma_relation in phpMyAdmin
+3. Go to SQL table
+4. Copy inserts from pma_relation.sql into text area in phpMyAdmin
+5. Click OK
