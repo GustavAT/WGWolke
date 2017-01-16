@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 16. Jan 2017 um 16:46
+-- Erstellungszeit: 16. Jan 2017 um 17:32
 -- Server-Version: 10.1.19-MariaDB
 -- PHP-Version: 5.6.28
 
@@ -156,6 +156,16 @@ CREATE TABLE `module` (
   `name` varchar(50) DEFAULT NULL,
   `price` decimal(10,0) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Daten für Tabelle `module`
+--
+
+INSERT INTO `module` (`oid`, `date_created`, `name`, `price`) VALUES
+('195fd0d9-dc09-11e6-9082-1c1b0d05ba41', '2017-01-16', 'Finanzen', '0'),
+('195fd938-dc09-11e6-9082-1c1b0d05ba41', '2017-01-16', 'Menuplan', '0'),
+('195fe056-dc09-11e6-9082-1c1b0d05ba41', '2017-01-16', 'Einkaufsliste', '0'),
+('195fe768-dc09-11e6-9082-1c1b0d05ba41', '2017-01-16', 'Mitbewohner', '0');
 
 -- --------------------------------------------------------
 
