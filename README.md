@@ -1,4 +1,4 @@
-# WGWolke
+# WG-Wolke
 Web-Projekt WS2016 WebTec
 ___
 **Setup SQL Tables and Relations:**
