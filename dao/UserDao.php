@@ -23,7 +23,7 @@ class UserDao extends AbstractDao{
         $sql = UserDao::getBaseSql();
         $sql->where("u.community_oid = ?");
         
-        $records = Datenbarsch::getInstance()->executeQuery($sql, "s", $community_oid);
+        $records = Datenbarsch::getInstance()->fishQuery($sql, "s", $community_oid);
         $users = [];
 
         if (mysqli_num_rows($records) > 0) {
@@ -39,7 +39,7 @@ class UserDao extends AbstractDao{
         $sql = UserDao::getBaseSql();
         $sql->where("u.oid = ?");
 
-        $records = Datenbarsch::getInstance()->executeQuery($sql, "s", $oid);
+        $records = Datenbarsch::getInstance()->fishQuery($sql, "s", $oid);
         $user = null;
 
         if (mysqli_num_rows($records) > 0) {
@@ -49,27 +49,29 @@ class UserDao extends AbstractDao{
         return $user;
     }
 
-    public function save($user) {
+    public function save($user) {        
+        $sql = new Sql();
         if ($this->getById($user->getObjectId()) == null) {
-            echo "create new user";
-            $sql = new Sql();
             $sql->insertInto("user", ["oid", "date_created", "email", "password", "first_name", "last_name", "is_locked", "reg_hash", "community_oid"]);
-            Datenbarsch::getInstance()->executeQuery($sql, "ssssssiss",
+            Datenbarsch::getInstance()->fishQuery($sql, "ssssssiss",
                 $user->getObjectId(), $user->getDateCreated(), $user->getEmail(), $user->getPassword(), $user->getFirstName(), $user->getLastName(),
-            $user->isLocked(), $user->getRegHash(), $user->getCommunityOid());            
+                $user->isLocked(), $user->getRegHash(), $user->getCommunityOid());            
         } else {
-            $sql = new Sql();
             $sql->update("user");
             $sql->set(["email", "password", "first_name", "last_name", "is_locked", "reg_hash", "community_oid"]);
             $sql->where("oid = ?");
-            Datenbarsch::getInstance()->executeQuery($sql, "ssssisss",
+            Datenbarsch::getInstance()->fishQuery($sql, "ssssisss",
                 $user->getEmail(), $user->getPassword(), $user->getFirstName(), $user->getLastName(),
                 $user->isLocked(), $user->getRegHash(), $user->getCommunityOid(), $user->getObjectId());
         }
     }
 
-    public function delete($user) {
-        // ToDo implement
+    public function delete($oid) {
+        $sql = new Sql();
+        $sql->delete();
+        $sql->from("user");
+        $sql->where("oid = ?");
+        Datenbarsch::getInstance()->fishQuery($sql, "s", $oid);
     }
 
     private static function getBaseSql() {

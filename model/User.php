@@ -35,6 +35,7 @@ class User extends Entity {
         );
     }
 
+    // getter
     public function getEmail() { return $this->email; }
     public function getPassword() {return $this->password;}
     public function getFirstName() {return $this->first_name;}
@@ -43,6 +44,7 @@ class User extends Entity {
     public function getRegHash() {return $this->reg_hash;}
     public function getCommunityOid() {return $this->community_oid;}
 
+    // setter
     public function setEmail($_value) {$this->email = $_value;}
     public function setPassword($_value) {$this->password = $_value;}
     public function setFirstName($_value) {$this->first_name = $_value;}

@@ -34,7 +34,7 @@ class Datenbarsch {
         return $this->mySqliError;
     }
 
-    public function executeQuery($sql, $paramTypes = null, ...$params) {
+    public function fishQuery($sql, $paramTypes = null, ...$params) {
         $sql_string = get_class($sql) == "Sql" ? $sql->getSql() : $sql;
         $stmt = $this->connection->prepare($sql_string);
         if (isset($paramTypes) && isset($params)) {

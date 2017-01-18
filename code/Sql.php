@@ -46,6 +46,10 @@ public $test;
         $this->sql_string .= " ";
     }
 
+    public function delete() {
+        $this->sql_string = "DELETE ";
+    }
+
     public function select($attributes) {
         $this->sql_string = "SELECT ";
         if (is_array($attributes)) {
