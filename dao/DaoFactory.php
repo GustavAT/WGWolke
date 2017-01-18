@@ -1,5 +1,5 @@
 <?php
-require_one("./UserDao.php");
+require_once("UserDao.php");
 
 /*
 * Dao Factory provides Dao-Objects for all datatables

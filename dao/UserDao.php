@@ -1,5 +1,8 @@
 <?php
-require_one("./AbstractDao.php");
+require_once("AbstractDao.php");
+require_once("../code/Sql.php");
+require_once("../code/Datenbarsch.php");
+require_once("../model/User.php");
 
 class UserDao extends AbstractDao{
     
@@ -17,7 +20,11 @@ class UserDao extends AbstractDao{
     // CRUD Operations
 
     public function getAll() {
-        // ToDo implement
+        $sql = new Sql();
+        $sql->select("*");
+        $sql->from("user");
+
+        return Datenbarsch::getInstance()->executeQuery($sql);
     }
 
     public function getById($oid) {
