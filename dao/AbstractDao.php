@@ -4,11 +4,6 @@
 */
 abstract class AbstractDao {
 
-    /**
-    * Get all entities of this type
-    */
-    abstract public function getAll();
-
     /*
     * Get a single entity by given object id
     */

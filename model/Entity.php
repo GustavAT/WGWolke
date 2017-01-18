@@ -10,4 +10,12 @@ abstract class Entity {
         $this->object_id = isset($oid) ? $oid : Util::newGuid();
         $this->date_created = isset($_date_created) ? $_date_created : date("Y-m-d H:i:s");
     }
+    
+    public function getObjectId() {
+        return $this->object_id;
+    }
+
+    public function getDateCreated() {
+        return $this->date_created;
+    }
 }
