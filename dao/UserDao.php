@@ -52,21 +52,22 @@ class UserDao extends AbstractDao{
     public function save($user) {        
         $sql = new Sql();
         if ($this->getById($user->getObjectId()) == null) {
-            $sql->insertInto("user", ["oid", "date_created", "email", "password", "first_name", "last_name", "is_locked", "reg_hash", "community_oid"]);
-            Datenbarsch::getInstance()->fishQuery($sql, "ssssssiss",
+            $sql->insertInto("user", ["oid", "date_created", "email", "password", "first_name", "last_name", "is_locked", "reg_hash", "community_oid", "is_owner"]);
+            Datenbarsch::getInstance()->fishQuery($sql, "ssssssissi",
                 $user->getObjectId(), $user->getDateCreated(), $user->getEmail(), $user->getPassword(), $user->getFirstName(), $user->getLastName(),
-                $user->isLocked(), $user->getRegHash(), $user->getCommunityOid());            
+                $user->isLocked(), $user->getRegHash(), $user->getCommunityOid(), $user->isOwner());            
         } else {
             $sql->update("user");
-            $sql->set(["email", "password", "first_name", "last_name", "is_locked", "reg_hash", "community_oid"]);
+            $sql->set(["email", "password", "first_name", "last_name", "is_locked", "reg_hash", "community_oid", "is_owner"]);
             $sql->where("oid = ?");
-            Datenbarsch::getInstance()->fishQuery($sql, "ssssisss",
+            Datenbarsch::getInstance()->fishQuery($sql, "ssssissis",
                 $user->getEmail(), $user->getPassword(), $user->getFirstName(), $user->getLastName(),
-                $user->isLocked(), $user->getRegHash(), $user->getCommunityOid(), $user->getObjectId());
+                $user->isLocked(), $user->getRegHash(), $user->getCommunityOid(), $user->isOwner(), $user->getObjectId());
         }
     }
 
     public function delete($oid) {
+        $oid = is_a($oid, "User") ? $oid->getObjectId() : $oid;
         $sql = new Sql();
         $sql->delete();
         $sql->from("user");
@@ -74,9 +75,17 @@ class UserDao extends AbstractDao{
         Datenbarsch::getInstance()->fishQuery($sql, "s", $oid);
     }
 
+    public function deleteByCommunityOid($community_oid) {
+        $sql = new Sql();
+        $sql->delete();
+        $sql->from("user");
+        $sql->where("community_oid = ?");
+        Datenbarsch::getInstance()->fishQuery($sql, "s", $community_oid);
+    }
+
     private static function getBaseSql() {
         $sql = new Sql();
-        $sql->select("*");
+        $sql->select("u.*");
         $sql->from("user u");
         return $sql;
     }

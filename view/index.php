@@ -2,19 +2,23 @@
 require_once("../dao/DaoFactory.php");
 
 $userDao = DaoFactory::createUserDao();
-$user = $userDao->getByCommunity(Util::newEmptyGuid());
-foreach ($user as $value) {
-    echo $value->toString() . "<br />";
-}
+$commDao = DaoFactory::createCommunityDao();
+$moduleDao = DaoFactory::createModuleDao();
 
-$user2 = $userDao->getById("140b4745-dd6c-11e6-805e-704d7b2d09b9");
-echo $user2->toString() . "<br />";
+$wg = new Community(null, null, "WG", "Bache's WG");
+$wg->addModules($moduleDao->getAll());
+$commDao->save($wg);
 
-// $is_locked = 1;
-// $user3 = new User(null, null, "peter.waysocher@gmail.com", md5("1234"), "Peter", "Waysocher", $is_locked, null, Util::newEmptyGuid());
-// $userDao->save($user3);
+$bache = new User(null, null, "christof.bachmann@gmail.com", md5("1234"), "Christof", "Bachmann", false, null, $wg->getObjectId(), true);
+$andi = new User(null, null, "andreas-tscheinig@gmx.at", md5("1234"), "Andreas", "Tscheinig", false, null, $wg->getObjectId(), false);
 
-$user2->setFirstName("Andi");
-$userDao->save($user2);
+$userDao->save($bache);
+$userDao->save($andi);
 
-// var_dump($user3);
+
+// $users = $userDao->getByCommunity(Util::newEmptyGuid());
+// $user = null;
+// foreach ($users as $value) {
+//     echo $value->toString() . "<br />";
+//     $user = $value;
+// }
