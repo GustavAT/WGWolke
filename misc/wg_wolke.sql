@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 16. Jan 2017 um 17:32
+-- Erstellungszeit: 19. Jan 2017 um 16:18
 -- Server-Version: 10.1.19-MariaDB
 -- PHP-Version: 5.6.28
 
@@ -30,9 +30,15 @@ CREATE TABLE `community` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `date_created` date DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
-  `description` varchar(500) DEFAULT NULL,
-  `creator_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
+  `description` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Community';
+
+--
+-- Daten für Tabelle `community`
+--
+
+INSERT INTO `community` (`oid`, `date_created`, `name`, `description`) VALUES
+('FAD6D8D1-6609-4509-8840-5ECC1C9F4B2B', '2017-01-18', 'WG', 'Bache''s WG');
 
 -- --------------------------------------------------------
 
@@ -179,6 +185,16 @@ CREATE TABLE `module_community` (
   `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Daten für Tabelle `module_community`
+--
+
+INSERT INTO `module_community` (`oid`, `module_oid`, `community_oid`) VALUES
+('1E5B6049-F588-4313-B103-617A84957BBA', '195fd0d9-dc09-11e6-9082-1c1b0d05ba41', 'FAD6D8D1-6609-4509-8840-5ECC1C9F4B2B'),
+('F771EBB7-C3FF-4B62-B485-EF74DC037D82', '195fd938-dc09-11e6-9082-1c1b0d05ba41', 'FAD6D8D1-6609-4509-8840-5ECC1C9F4B2B'),
+('98FAFFC4-6EFE-43CB-A96A-81C17EE7C084', '195fe056-dc09-11e6-9082-1c1b0d05ba41', 'FAD6D8D1-6609-4509-8840-5ECC1C9F4B2B'),
+('B9F953E6-2F82-4304-A056-DFC34F940F15', '195fe768-dc09-11e6-9082-1c1b0d05ba41', 'FAD6D8D1-6609-4509-8840-5ECC1C9F4B2B');
+
 -- --------------------------------------------------------
 
 --
@@ -194,6 +210,13 @@ CREATE TABLE `news_feed_item` (
   `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `user_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Daten für Tabelle `news_feed_item`
+--
+
+INSERT INTO `news_feed_item` (`oid`, `date_created`, `title`, `message`, `expiration_date`, `community_oid`, `user_oid`) VALUES
+('E94682F2-DD45-4021-82AB-69BD5B895705', '2017-01-19', 'Neu!!!', 'Das ist ein neuer news-feed Eintrag!', '2017-01-20', 'FAD6D8D1-6609-4509-8840-5ECC1C9F4B2B', '10FA88BA-3EA7-400C-BE42-4CA857139350');
 
 -- --------------------------------------------------------
 
@@ -224,8 +247,18 @@ CREATE TABLE `user` (
   `last_name` varchar(50) NOT NULL,
   `is_locked` tinyint(1) NOT NULL DEFAULT '1',
   `reg_hash` varchar(32) DEFAULT NULL,
-  `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
+  `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
+  `is_owner` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Daten für Tabelle `user`
+--
+
+INSERT INTO `user` (`oid`, `date_created`, `email`, `password`, `first_name`, `last_name`, `is_locked`, `reg_hash`, `community_oid`, `is_owner`) VALUES
+('10320FE9-D616-4ADC-84A5-79704DC7585A', '2017-01-18', 'peter.waysocher@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Peter', 'Waysocher', 0, NULL, 'FAD6D8D1-6609-4509-8840-5ECC1C9F4B2B', 0),
+('10FA88BA-3EA7-400C-BE42-4CA857139350', '2017-01-18', 'christof.bachmann@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Christof', 'Bachmann', 0, NULL, 'FAD6D8D1-6609-4509-8840-5ECC1C9F4B2B', 1),
+('B6E99186-E42B-4134-B44A-66DA0E278823', '2017-01-18', 'andreas-tscheinig@gmx.at', '81dc9bdb52d04dc20036dbd8313ed055', 'Andreas', 'Tscheinig', 0, NULL, 'FAD6D8D1-6609-4509-8840-5ECC1C9F4B2B', 0);
 
 --
 -- Indizes der exportierten Tabellen
@@ -295,7 +328,8 @@ ALTER TABLE `module`
 -- Indizes für die Tabelle `module_community`
 --
 ALTER TABLE `module_community`
-  ADD PRIMARY KEY (`oid`);
+  ADD PRIMARY KEY (`oid`),
+  ADD UNIQUE KEY `module_oid` (`module_oid`,`community_oid`);
 
 --
 -- Indizes für die Tabelle `news_feed_item`

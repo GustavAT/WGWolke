@@ -61,20 +61,6 @@ class CommunityDao extends AbstractDao{
         Datenbarsch::getInstance()->fishQuery($sql, "s", $community_oid);
     }
 
-    // public function getByCreatorOid($creator_oid) {
-    //     $sql = CommunityDao::getBaseSql();
-    //     $sql->where("c.creator_oid = ?");
-        
-    //     $records = Datenbarsch::getInstance()->fishQuery($sql, "s", $creator_oid);
-    //     $community = null;
-
-    //     if (mysqli_num_rows($records) > 0) {
-    //         $community = Community::fromRecord(mysqli_fetch_assoc($records));
-    //     }
-
-    //     return $community;
-    // }
-
     public function getById($oid) {
         $sql = CommunityDao::getBaseSql();
         $sql->where("c.oid = ?");

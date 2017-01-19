@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 16. Jan 2017 um 16:56
+-- Erstellungszeit: 19. Jan 2017 um 16:18
 -- Server-Version: 10.1.19-MariaDB
 -- PHP-Version: 5.6.28
 
@@ -40,7 +40,6 @@ CREATE TABLE `pma__relation` (
 --
 
 INSERT INTO `pma__relation` (`master_db`, `master_table`, `master_field`, `foreign_db`, `foreign_table`, `foreign_field`) VALUES
-('wg_wolke', 'community', 'creator_oid', 'wg_wolke', 'user', 'oid'),
 ('wg_wolke', 'dish_item', 'community_oid', 'wg_wolke', 'community', 'oid'),
 ('wg_wolke', 'dish_item_entry', 'dish_item_oid', 'wg_wolke', 'dish_item', 'oid'),
 ('wg_wolke', 'dish_item_entry', 'user_oid', 'wg_wolke', 'user', 'oid'),

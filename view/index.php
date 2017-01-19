@@ -4,6 +4,7 @@ require_once("../dao/DaoFactory.php");
 $userDao = DaoFactory::createUserDao();
 $commDao = DaoFactory::createCommunityDao();
 $moduleDao = DaoFactory::createModuleDao();
+$newsFeedDao = DaoFactory::createNewsFeedDao();
 
 // $wg = new Community(null, null, "WG", "Bache's WG");
 // $wg->addModules($moduleDao->getAll());
@@ -22,3 +23,7 @@ $users = $userDao->getByCommunity($wg->getObjectId());
 foreach ($users as $value) {
     echo $value->toString() . "<br />";
 }
+
+// $item1 = new NewsFeedItem(null, null, "Neu!!!", "Das ist ein neuer news-feed Eintrag!",
+//     date("Y-m-d H:i:s", time() + 86400) , $wg->getObjectId(), $users[1]->getObjectId());
+// $newsFeedDao->save($item1);
