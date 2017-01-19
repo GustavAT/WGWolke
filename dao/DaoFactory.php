@@ -3,6 +3,7 @@ require_once("UserDao.php");
 require_once("CommunityDao.php");
 require_once("ModuleDao.php");
 require_once("NewsFeedDao.php");
+require_once("ToDoItemDao.php");
 
 /*
 * Dao Factory provides Dao-Objects for all datatables
@@ -23,5 +24,9 @@ class DaoFactory {
 
     public static function createNewsFeedDao() {
         return NewsFeedDao::getInstance();
+    }
+
+    public static function createToDoItemDao() {
+        return ToDoItemDao::getInstance();
     }
 }

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 19. Jan 2017 um 16:18
+-- Erstellungszeit: 19. Jan 2017 um 21:34
 -- Server-Version: 10.1.19-MariaDB
 -- PHP-Version: 5.6.28
 
@@ -77,7 +77,8 @@ CREATE TABLE `dish_tag` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `date_created` date DEFAULT NULL,
   `name` varchar(30) DEFAULT NULL,
-  `color` varchar(7) NOT NULL DEFAULT '#FF0000'
+  `color` varchar(7) NOT NULL DEFAULT '#FF0000',
+  `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -228,6 +229,7 @@ CREATE TABLE `todo_item` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `date_created` date DEFAULT NULL,
   `description` varchar(40) NOT NULL DEFAULT '',
+  `is_finished` tinyint(1) NOT NULL DEFAULT '0',
   `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `user_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
