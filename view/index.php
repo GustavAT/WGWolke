@@ -24,6 +24,6 @@ foreach ($users as $value) {
     echo $value->toString() . "<br />";
 }
 
-// $item1 = new NewsFeedItem(null, null, "Neu!!!", "Das ist ein neuer news-feed Eintrag!",
-//     date("Y-m-d H:i:s", time() + 86400) , $wg->getObjectId(), $users[1]->getObjectId());
-// $newsFeedDao->save($item1);
+$item1 = new NewsFeedItem(null, null, "Free SQL Hosting", "It worked :)",
+    date("Y-m-d H:i:s", time() + 86400) , $wg->getObjectId(), $users[1]->getObjectId());
+$newsFeedDao->save($item1);
