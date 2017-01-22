@@ -19,6 +19,27 @@ class UserDao extends AbstractDao{
 
     // CRUD Operations
 
+    public function getByFinanceItem($finance_item_oid) {
+        $sql = UserDao::getBaseSql();
+        $sql->join("finance_item_user fiu");
+        $sql->on("u.oid = fiu.user_oid");
+        $sql->join("finance_item fi");
+        $sql->on("fi.oid = fiu.finance_item_oid");
+        $sql->where("fi.oid = ?");
+
+        $records = Datenbarsch::getInstance()->fishQuery($sql, "s", $finance_item_oid);
+        $users = [];
+
+        if (mysqli_num_rows($records) > 0) {
+            while ($row = $records->fetch_assoc()) {
+                array_push($users, User::fromRecord($row));
+            }
+        }
+
+        return $users;
+
+    }
+
     public function getByCommunity($community_oid) {
         $sql = UserDao::getBaseSql();
         $sql->where("u.community_oid = ?");

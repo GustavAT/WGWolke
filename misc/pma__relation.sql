@@ -44,7 +44,7 @@ INSERT INTO `pma__relation` (`master_db`, `master_table`, `master_field`, `forei
 ('wg_wolke', 'dish_item_entry', 'dish_item_oid', 'wg_wolke', 'dish_item', 'oid'),
 ('wg_wolke', 'dish_item_entry', 'user_oid', 'wg_wolke', 'user', 'oid'),
 ('wg_wolke', 'dish_tag', 'community_oid', 'wg_wolke', 'community', 'oid'),
-('wg_wolke', 'dish_tag_item', 'dish_item_id', 'wg_wolke', 'dish_item', 'oid'),
+('wg_wolke', 'dish_tag_item', 'dish_item_oid', 'wg_wolke', 'dish_item', 'oid'),
 ('wg_wolke', 'dish_tag_item', 'dish_tag_oid', 'wg_wolke', 'dish_tag', 'oid'),
 ('wg_wolke', 'entity_blob_entry', 'content_oid', 'wg_wolke', 'entity_blob_content', 'oid'),
 ('wg_wolke', 'finance_item', 'community_oid', 'wg_wolke', 'community', 'oid'),

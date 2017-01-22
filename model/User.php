@@ -12,7 +12,7 @@ class User extends Entity {
     private $is_owner;
 
     public function __construct($_object_id, $_date_created, $_email, $_password,
-            $_first_name, $_last_name, $_is_locked, $_reg_hash, $_community_id, $_is_owner) {
+            $_first_name, $_last_name, $_is_locked, $_reg_hash, $_community_oid, $_is_owner) {
         parent::__construct($_object_id, $_date_created);
         $this->email = $_email;
         $this->password = $_password;
@@ -20,7 +20,7 @@ class User extends Entity {
         $this->last_name = $_last_name;
         $this->is_locked = $_is_locked;
         $this->reg_hash = $_reg_hash;
-        $this->community_oid = $_community_id;
+        $this->community_oid = $_community_oid;
         $this->is_owner = $_is_owner;
     }
 

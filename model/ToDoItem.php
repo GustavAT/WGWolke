@@ -17,7 +17,7 @@ class ToDoItem extends Entity {
     }
 
     public static function fromRecord($record) {
-        return new User(
+        return new ToDoItem(
             $record["oid"],
             $record["date_created"],
             $record["description"],

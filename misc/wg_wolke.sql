@@ -90,7 +90,7 @@ CREATE TABLE `dish_tag` (
 CREATE TABLE `dish_tag_item` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `dish_tag_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
-  `dish_item_id` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
+  `dish_item_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

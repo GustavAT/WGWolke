@@ -27,4 +27,8 @@ class Util {
     public static function newEmptyGuid() {
         return "00000000-0000-0000-0000-000000000000";
     }
+
+    public static function now() {
+        return date("Y-m-d H:i:s");
+    }
 }
