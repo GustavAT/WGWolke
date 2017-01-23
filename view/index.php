@@ -228,7 +228,7 @@ require_once("../code/PrintHelper.php");
             
             if (isValid) {
                 $("#alert-incorrect-data").hide();
-                $.post("")
+                // $.post("")
             } else {
                 $("#alert-incorrect-data").show();
             }
