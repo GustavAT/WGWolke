@@ -1,5 +1,30 @@
 <?php
 require_once("../code/PrintHelper.php");
+require_once("../code/SessionHelper.php");
+
+SessionHelper::doActivity();
+
+$user_oid = SessionHelper::getCurrentUserOid();
+if ($user_oid !== null) {
+    // redirect to dashboard
+}
+
+
+$login_valid = true;
+if (isset($_POST["email"]) && isset($_POST["password"])) {
+    $email = isset($_POST["email"]) ? $_POST["email"] : "";
+    $password = isset($_POST["password"]) ? $_POST["password"] : "";
+    $login_valid = SessionHelper::logIn($email, $password);
+
+    if ($login_valid) {
+        // redirect to dashboard    
+    }
+}
+
+echo SessionHelper::getLastActivity();
+
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,6 +44,7 @@ require_once("../code/PrintHelper.php");
         </div>
         <div class="row">
             <div class="col-md-6">
+            <form role="form" method="POST"> <!-- onsubmit="return checkLoginForm()"-->
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Log in</h3>
@@ -27,30 +53,30 @@ require_once("../code/PrintHelper.php");
                         <div>
                             <p class="lead text-muted"> Hey there, welcome back! </p>
                         </div>
-                        <form role="form">
                             <fieldset>
-                                <div class="form-group input-group login-form-group">
+                                <div class="form-group input-group form-group-login">
                                     <span class="input-group-addon">@</span>
-                                    <input class="form-control" placeholder="E-Mail" name="email" type="email" autofocus>
+                                    <input class="form-control" id="login-email" placeholder="E-Mail" name="email" type="email" autofocus>
                                 </div>
-                                <div class="form-group login-form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                <div class="form-group form-group-login">
+                                    <input class="form-control" id="login-password" placeholder="Password" name="password" type="password" value="">
                                 </div>
 
                                 <h6 class="text-right text-muted text-success"><a class="link-no-decoration">Forgot password?</a></h6>                                
                             </fieldset>
-                        </form>
                         <?php
-                            if (isset($_GET["login_error"])) { ?>
+                            if (!$login_valid) { ?>
                                 <div class="alert alert-danger">
-                                    User name or password is incorrect.
+                                    E-mail or password is incorrect.
                                 </div>
                             <?php } ?>
                     </div>
                     <div class="panel-footer">
-                        <button class="btn btn-lg btn-success btn-block">Login</button>
+                        <button type="submit" class="btn btn-lg btn-success btn-block" id="button-login">Login</button>
                     </div>
                 </div>
+                
+                    </form>
             </div>
 
             <div class="col-md-6">
@@ -63,9 +89,7 @@ require_once("../code/PrintHelper.php");
                         <p class="text-muted"> Get access to convenient community features. </p>                        
                     </div>
                     <div class="panel-footer">
-                        <form>
-                            <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#register-dialog">Register</button>
-                        </form>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#register-dialog">Register</button>                        
                     </div>
                 </div>
             </div>
@@ -137,8 +161,8 @@ require_once("../code/PrintHelper.php");
             $("#register-password").focusout(validatePassword);
             $("#register-password-confirm").focusout(validatePasswordConfirm);
 
-            <?php if (isset($_GET["login_error"])) { ?>
-                $(".login-form-group").addClass("has-error");
+            <?php if (!$login_valid) { ?>
+                $(".form-group-login").addClass("has-error");
             <?php } ?>
         });
 
@@ -226,9 +250,21 @@ require_once("../code/PrintHelper.php");
                 && validatePassword()
                 && validatePasswordConfirm();
             
-            if (isValid) {
+            if (isValid || true) {
                 $("#alert-incorrect-data").hide();
-                // $.post("")
+                $.ajax({
+                    url: "../code/Register.php",
+                    type: "POST",
+                    data: {
+                        community_name: communityName.val(),
+                        community_description: communityDescription.val()
+                    },
+                    dataType: "json"
+                }).done(function() {
+                    console.log("it worked");
+                }).fail(function(jqXhr, status, error) {
+                    console.log(jqXhr, status, error);
+                });
             } else {
                 $("#alert-incorrect-data").show();
             }
