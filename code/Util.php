@@ -31,4 +31,16 @@ class Util {
     public static function now() {
         return date("Y-m-d H:i:s");
     }
+
+    public static function parsePost($item) {
+        return isset($_POST[$item]) ? $_POST[$item] : "";
+    }
+
+    public static function isEmpty($string) {
+        return $string === null || strlen($string) === 0;
+    }
+
+    public static function redirect($url) {
+        header("Location: ./" . $url);
+    }
 }

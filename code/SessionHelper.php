@@ -25,8 +25,9 @@ class SessionHelper {
         return $user_oid !== null;
     }
 
-    public static function logOut($user_oid) {
-
+    public static function logOut() {
+        session_unset();
+        session_destroy();
     }
 
     public static function isLoggedIn($user_oid) {
@@ -41,7 +42,11 @@ class SessionHelper {
         }
     }
 
+    public static function setCurrentUserOid($user_oid) {
+        $_SESSION[self::$session_name_user] = $user_oid;
+    }
+
     public static function getLastActivity() {
-        return $_SESSION[self::$session_name_last_activity];
+        return isset($_SESSION[self::$session_name_last_activity]) ? $_SESSION[self::$session_name_last_activity] : null;
     }
 }

@@ -12,16 +12,10 @@ class Datenbarsch {
     private $mySqliError;
     private static $instance = null;
 
-    // private $host = "localhost";
-    // private $username = "root";
-    // private $password = "";
-    // private $db_name = "wg_wolke";
-
-    private $host = "sql11.freemysqlhosting.net";
-    private $username = "sql11154569";
-    private $password = "fm82flPzGG";
-    private $db_name = "sql11154569";
-    private $port = "3306";
+    private $host = "localhost";
+    private $username = "root";
+    private $password = "";
+    private $db_name = "wg_wolke";
 
     public static function getInstance() {
         if (self::$instance == null) {
@@ -32,7 +26,7 @@ class Datenbarsch {
 
     private function __construct() {
         $this->connection = new mysqli($this->host, $this->username,
-            $this->password, $this->db_name, $this->port);
+            $this->password, $this->db_name); // , $this->port
         $this->mySqliError = mysqli_connect_error();
     }
 

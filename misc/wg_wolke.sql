@@ -49,7 +49,7 @@ INSERT INTO `community` (`oid`, `date_created`, `name`, `description`) VALUES
 CREATE TABLE `dish_item` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `date_created` date DEFAULT NULL,
-  `name` text NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
   `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -76,7 +76,7 @@ CREATE TABLE `dish_item_entry` (
 CREATE TABLE `dish_tag` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `date_created` date DEFAULT NULL,
-  `name` varchar(30) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
   `color` varchar(7) NOT NULL DEFAULT '#FF0000',
   `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -205,8 +205,8 @@ INSERT INTO `module_community` (`oid`, `module_oid`, `community_oid`) VALUES
 CREATE TABLE `news_feed_item` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `date_created` date DEFAULT NULL,
-  `title` varchar(30) DEFAULT NULL,
-  `message` varchar(200) DEFAULT NULL,
+  `title` varchar(50) DEFAULT NULL,
+  `message` varchar(500) DEFAULT NULL,
   `expiration_date` date DEFAULT NULL,
   `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `user_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
@@ -228,7 +228,7 @@ INSERT INTO `news_feed_item` (`oid`, `date_created`, `title`, `message`, `expira
 CREATE TABLE `todo_item` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `date_created` date DEFAULT NULL,
-  `description` varchar(40) NOT NULL DEFAULT '',
+  `description` varchar(50) NOT NULL DEFAULT '',
   `is_finished` tinyint(1) NOT NULL DEFAULT '0',
   `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `user_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'

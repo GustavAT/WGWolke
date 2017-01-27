@@ -1,41 +1,39 @@
 <?php
 require_once("../code/PrintHelper.php");
 require_once("../code/SessionHelper.php");
+require_once("../code/Util.php");
 
+// SessionHelper::logOut();
 SessionHelper::doActivity();
 
 $user_oid = SessionHelper::getCurrentUserOid();
 if ($user_oid !== null) {
-    // redirect to dashboard
+    Util::redirect("Dashboard.php");
 }
 
 
 $login_valid = true;
-if (isset($_POST["email"]) && isset($_POST["password"])) {
-    $email = isset($_POST["email"]) ? $_POST["email"] : "";
-    $password = isset($_POST["password"]) ? $_POST["password"] : "";
-    $login_valid = SessionHelper::logIn($email, $password);
+$email = Util::parsePost("email");
+$password = Util::parsePost("password");
 
+if (!Util::isEmpty($email) && !Util::isEmpty($password)) {
+    $login_valid = SessionHelper::logIn($email, $password);
     if ($login_valid) {
-        // redirect to dashboard    
+        Util::redirect("Dashboard.php");
     }
 }
-
-echo SessionHelper::getLastActivity();
-
-
 
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <?php PrintHelper::includeCSS(); ?>
+    <title> WG Wolke </title>
 </head>
 
 <body>
     
     <div class="container">
-        <br /> <br />
         <div class="row">
             <div class="col-md-6 col-md-offset-3 text-center">
                 <img src="../images/wg_wolke.png" class="img-responsive text-center" alt="WG Wolke Logo">
@@ -253,16 +251,23 @@ echo SessionHelper::getLastActivity();
             if (isValid || true) {
                 $("#alert-incorrect-data").hide();
                 $.ajax({
-                    url: "../code/Register.php",
+                    url: "../code/Registration.php",
                     type: "POST",
                     data: {
                         community_name: communityName.val(),
-                        community_description: communityDescription.val()
+                        community_description: communityDescription.val(),
+                        user_first_name: firstName.val(),
+                        user_last_name: lastName.val(),
+                        user_email: email.val(),
+                        user_password: password.val(),
+                        user_password_confirm: passwordConfirm.val()
                     },
                     dataType: "json"
                 }).done(function() {
-                    console.log("it worked");
+                    // Util::redirect("Dashboard.php");
+                    window.location.replace("Dashboard.php");
                 }).fail(function(jqXhr, status, error) {
+                    debugger;
                     console.log(jqXhr, status, error);
                 });
             } else {
