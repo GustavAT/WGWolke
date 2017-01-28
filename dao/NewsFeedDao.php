@@ -22,6 +22,7 @@ class NewsFeedDao extends AbstractDao{
     public function getByCommunity($community_oid) {
         $sql = NewsFeedDao::getBaseSql();
         $sql->where("nf.community_oid = ?");
+        $sql->orderBy("nf.date_created desc");
         
         $records = Datenbarsch::getInstance()->fishQuery($sql, "s", $community_oid);
         $news_feed_items = [];

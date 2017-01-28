@@ -24,9 +24,13 @@ $valid_user = Validator::isValidField($user_first_name)
     && Validator::equals($user_password, $user_password_confirm);
 
 if ($valid_community && $valid_user) {
+
+        $modules = DaoFactory::createModuleDao()->getAll();
+
         $commDao = DaoFactory::createCommunityDao();
         $community = new Community(null, null, $community_name, $community_description);
         $commDao->save($community);
+        $commDao->addModules($community->getObjectId(), $modules);
 
         $user = new User(null, null,
             $user_email,

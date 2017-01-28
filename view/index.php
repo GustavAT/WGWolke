@@ -3,7 +3,11 @@ require_once("../code/PrintHelper.php");
 require_once("../code/SessionHelper.php");
 require_once("../code/Util.php");
 
-// SessionHelper::logOut();
+$logout = Util::parseGet("logout");
+if ($logout) {
+    SessionHelper::logOut();
+}
+
 SessionHelper::doActivity();
 
 $user_oid = SessionHelper::getCurrentUserOid();
@@ -70,6 +74,7 @@ if (!Util::isEmpty($email) && !Util::isEmpty($password)) {
                             <?php } ?>
                     </div>
                     <div class="panel-footer">
+                        <!-- toDo Enter-->
                         <button type="submit" class="btn btn-lg btn-success btn-block" id="button-login">Login</button>
                     </div>
                 </div>
@@ -109,7 +114,7 @@ if (!Util::isEmpty($email) && !Util::isEmpty($password)) {
                         <input class="form-control" placeholder="Community-Name" id="register-community-name" name="community-name" type="text" autofocus maxlength="50">
                     </div>
                     <div class="form-group" id="register-community-description-form-group">
-                        <textarea class="form-control" rows="3" placeholder="Description" maxlength="500"></textarea>
+                        <textarea class="form-control" rows="3" placeholder="Description"  id="register-community-description" maxlength="500"></textarea>
                     </div>
                     <p class="lead text-muted"> About you </p>
 
@@ -248,7 +253,7 @@ if (!Util::isEmpty($email) && !Util::isEmpty($password)) {
                 && validatePassword()
                 && validatePasswordConfirm();
             
-            if (isValid || true) {
+            if (isValid) {
                 $("#alert-incorrect-data").hide();
                 $.ajax({
                     url: "../code/Registration.php",
@@ -267,8 +272,8 @@ if (!Util::isEmpty($email) && !Util::isEmpty($password)) {
                     // Util::redirect("Dashboard.php");
                     window.location.replace("Dashboard.php");
                 }).fail(function(jqXhr, status, error) {
-                    debugger;
                     console.log(jqXhr, status, error);
+                    // toDo Error Message
                 });
             } else {
                 $("#alert-incorrect-data").show();

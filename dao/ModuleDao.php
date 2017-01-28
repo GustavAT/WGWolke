@@ -20,7 +20,7 @@ class ModuleDao extends AbstractDao {
     // CRUD Operations
 
     public function getAll() {
-        $sql = ModuleDao::getBaseSql();
+        $sql = ModuleDao::getBaseSql();        
         $records = Datenbarsch::getInstance()->fishQuery($sql);
         $modules = [];
 
@@ -50,16 +50,16 @@ class ModuleDao extends AbstractDao {
     public function save($module) {
         $sql = new Sql();
         if ($this->getById($module->getObjectId()) == null) {
-            $sql->insertInto("module", ["oid", "date_created", "name", "price"]);
-            Datenbarsch::getInstance()->fishQuery($sql, "sssd",
+            $sql->insertInto("module", ["oid", "date_created", "name", "type", "price"]);
+            Datenbarsch::getInstance()->fishQuery($sql, "sssid",
                 $module->getObjectId(), $module->getDateCreated(),
-                $module->getName(), $module->getPrice());            
+                $module->getName(), $module->getType(), $module->getPrice());            
         } else {
             $sql->update("module");
-            $sql->set(["name", "price"]);
+            $sql->set(["name", "type", "price"]);
             $sql->where("oid = ?");
-            Datenbarsch::getInstance()->fishQuery($sql, "sds",
-                $module->getName(), $module->getPrice(), $module->getObjectId());
+            Datenbarsch::getInstance()->fishQuery($sql, "sids",
+                $module->getName(), $module->getType(), $module->getPrice(), $module->getObjectId());
         }
     }
 
@@ -76,6 +76,7 @@ class ModuleDao extends AbstractDao {
         $sql = new Sql();
         $sql->select("m.*");
         $sql->from("module m");
+        $sql->orderBy("m.type");
         return $sql;
     }
 }

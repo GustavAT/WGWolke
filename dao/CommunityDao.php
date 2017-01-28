@@ -34,11 +34,12 @@ class CommunityDao extends AbstractDao{
 
     public function getModules($community_oid) {
         $sql = new Sql();
-        $sql->select(["m.oid", "m.date_created", "m.name", "m.price"]);
+        $sql->select(["m.oid", "m.date_created", "m.name", "m.type", "m.price"]);
         $sql->from("module_community mc");
         $sql->join("module m");
         $sql->on("mc.module_oid = m.oid");
         $sql->where("mc.community_oid = ?");
+        $sql->orderBy("m.type");
 
         $records = Datenbarsch::getInstance()->fishQuery($sql, "s", $community_oid);
         $modules = [];
@@ -59,6 +60,25 @@ class CommunityDao extends AbstractDao{
         $sql->where("community_oid = ?");
 
         Datenbarsch::getInstance()->fishQuery($sql, "s", $community_oid);
+    }
+
+    public function getByUserOid($user_oid) {
+        $sql = new Sql();
+        $sql->select("u.community_oid");
+        $sql->from("user u");
+        $sql->where("u.oid = ?");
+
+        $result = Datenbarsch::getInstance()->fishQuery($sql, "s", $user_oid);
+        $community = null;
+
+        if (mysqli_num_rows($result) > 0) {
+            $id = mysqli_fetch_assoc($result)["community_oid"];
+            if ($id) {
+                $community = $this->getById($id);
+            }
+        }
+
+        return $community;
     }
 
     public function getById($oid) {

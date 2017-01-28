@@ -19,7 +19,7 @@ class NewsFeedItem extends Entity {
     }
 
     public static function fromRecord($record) {
-        return new User(
+        return new NewsFeedItem(
             $record["oid"],
             $record["date_created"],
             $record["title"],

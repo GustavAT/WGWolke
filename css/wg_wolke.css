@@ -10,3 +10,41 @@ textarea {
     text-decoration: none;
     cursor: pointer;
 }
+
+
+.scaling-normal {    
+    height: 70px;
+    width: 70px;
+    background-size: 70px 70px;
+}
+/** button **/
+.btn-offset {
+    margin-top: -2.5px !important;
+    float: right;
+}
+
+.li-padding {
+    padding: 10px;
+}
+
+/** icons **/
+.icon-finances {
+    background-image: url("../images/mones-icon.png");
+}
+
+.icon-member {
+    background-image: url("../images/user-icon.png");
+}
+
+.icon-menuplan {
+    background-image: url("../images/dish-icon.png");
+}
+
+.icon-todo {
+    background-image: url("../images/todo-icon.png");
+}
+
+.icon-shopping {
+    background-image: url("../images/shopping-icon.png");
+}
+

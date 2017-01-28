@@ -36,6 +36,10 @@ class Util {
         return isset($_POST[$item]) ? $_POST[$item] : "";
     }
 
+    public static function parseGet($item) {
+        return isset($_GET[$item]) ? $_GET[$item] : "";
+    }
+
     public static function isEmpty($string) {
         return $string === null || strlen($string) === 0;
     }
