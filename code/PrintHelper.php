@@ -1,4 +1,6 @@
 <?php
+require_once("../dao/DaoFactory.php");
+require_once("SessionHelper.php");
 
 class PrintHelper {
 
@@ -31,6 +33,7 @@ class PrintHelper {
             case 1:
                 $icon = "icon-member";
                 $module_color = "primary";
+                $value = self::getMemberCount();
                 break;
             case 2:
                 $icon = "icon-finances";
@@ -87,4 +90,19 @@ class PrintHelper {
         </div>
 
     <?php }
+
+
+    // helper functions
+    
+    private static function getMemberCount() {
+        $count = 1;
+        $user_oid = SessionHelper::getCurrentUserOid();
+        if ($user_oid !== null) {
+            $user = DaoFactory::createUserDao()->getById($user_oid);
+            if ($user !== null) {
+                $count = DaoFactory::createCommunityDao()->getUserCount($user->getCommunityOid());
+            }
+        }
+        return $count;
+    }
 }

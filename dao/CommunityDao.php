@@ -53,6 +53,22 @@ class CommunityDao extends AbstractDao{
         return $modules;
     }
 
+    public function getUserCount($oid) {
+        $sql = new Sql();
+        $sql->select("count(1) as cnt");
+        $sql->from("user u");
+        $sql->where("u.community_oid = ?");
+
+        $record = Datenbarsch::getInstance()->fishQuery($sql, "s", $oid);
+        $count = -1;
+
+        if (mysqli_num_rows($record) > 0) {
+            $count = mysqli_fetch_assoc($record)["cnt"];
+        }
+
+        return $count;
+    }
+
     public function deleteModules($community_oid) {
         $sql = new Sql();
         $sql->delete();

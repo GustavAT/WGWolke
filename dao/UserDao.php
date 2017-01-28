@@ -56,6 +56,20 @@ class UserDao extends AbstractDao{
         return $users;
     }
 
+    public function getByEmail($email) {
+        $sql = UserDao::getBaseSql();
+        $sql->where("u.email = ?");
+
+        $records = Datenbarsch::getInstance()->fishQuery($sql, "s", $email);
+        $user = null;
+
+        if (mysqli_num_rows($records) > 0) {
+            $user = User::fromRecord(mysqli_fetch_assoc($records));
+        }
+
+        return $user;
+    }
+
     public function getById($oid) {
         $sql = UserDao::getBaseSql();
         $sql->where("u.oid = ?");

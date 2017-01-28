@@ -12,6 +12,7 @@ class SessionHelper {
             && (time() - $_SESSION[self::$session_name_last_activity] > 1800)) {
             session_unset();
             session_destroy();
+            session_start();
         }
 
        $_SESSION[self::$session_name_last_activity] = time();
@@ -28,6 +29,7 @@ class SessionHelper {
     public static function logOut() {
         session_unset();
         session_destroy();
+        session_start();
     }
 
     public static function isLoggedIn($user_oid) {

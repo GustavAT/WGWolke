@@ -1,13 +1,14 @@
 <?php
 require_once("../code/PrintHelper.php");
+require_once("../code/FormGenerator.php");
 require_once("../code/SessionHelper.php");
 require_once("../code/Util.php");
+require_once("../code/Resources.php");
 
 $logout = Util::parseGet("logout");
 if ($logout) {
     SessionHelper::logOut();
 }
-
 SessionHelper::doActivity();
 
 $user_oid = SessionHelper::getCurrentUserOid();
@@ -17,10 +18,11 @@ if ($user_oid !== null) {
 
 
 $login_valid = true;
-$email = Util::parsePost("email");
-$password = Util::parsePost("password");
+$email = Util::parsePost("login-email");
+$password = Util::parsePost("login-password");
 
-if (!Util::isEmpty($email) && !Util::isEmpty($password)) {
+$login = Util::parseGet("login");
+if ($login) {
     $login_valid = SessionHelper::logIn($email, $password);
     if ($login_valid) {
         Util::redirect("Dashboard.php");
@@ -42,44 +44,33 @@ if (!Util::isEmpty($email) && !Util::isEmpty($password)) {
             <div class="col-md-6 col-md-offset-3 text-center">
                 <img src="../images/wg_wolke.png" class="img-responsive text-center" alt="WG Wolke Logo">
             </div>
-
         </div>
         <div class="row">
             <div class="col-md-6">
-            <form role="form" method="POST"> <!-- onsubmit="return checkLoginForm()"-->
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Log in</h3>
-                    </div>
-                    <div class="panel-body panel-height">
-                        <div>
-                            <p class="lead text-muted"> Hey there, welcome back! </p>
+                <form role="form" method="POST" action="index.php?login=1"> <!-- onsubmit="return checkLoginForm()"-->
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Login</h3>
                         </div>
-                            <fieldset>
-                                <div class="form-group input-group form-group-login">
-                                    <span class="input-group-addon">@</span>
-                                    <input class="form-control" id="login-email" placeholder="E-Mail" name="email" type="email" autofocus>
-                                </div>
-                                <div class="form-group form-group-login">
-                                    <input class="form-control" id="login-password" placeholder="Password" name="password" type="password" value="">
-                                </div>
+                        <div class="panel-body panel-height">
+                            <div>
+                                <p class="lead text-muted"> <?php echo Resources::$welcome_message; ?> </p>
+                            </div>
+                                <fieldset>
+                                    <?php FormGenerator::createEmailField("login-email", "E-Mail", true); ?>
+                                    <?php FormGenerator::createPasswordField("login-password", "Password"); ?>
 
-                                <h6 class="text-right text-muted text-success"><a class="link-no-decoration">Forgot password?</a></h6>                                
-                            </fieldset>
-                        <?php
-                            if (!$login_valid) { ?>
-                                <div class="alert alert-danger">
-                                    E-mail or password is incorrect.
+                                    <h6 class="text-right text-muted text-success"><a class="link-no-decoration">Forgot password?</a></h6>                                
+                                </fieldset>
+                                <div id="alert-login-incorrect" class="alert alert-danger">
+                                    <?php echo Resources::$login_not_successful; ?>
                                 </div>
-                            <?php } ?>
-                    </div>
-                    <div class="panel-footer">
-                        <!-- toDo Enter-->
-                        <button type="submit" class="btn btn-lg btn-success btn-block" id="button-login">Login</button>
-                    </div>
-                </div>
-                
-                    </form>
+                        </div>
+                        <div class="panel-footer">
+                            <button type="submit" class="btn btn-lg btn-success btn-block" id="button-login">Login</button>
+                        </div>
+                    </div>                
+                </form>
             </div>
 
             <div class="col-md-6">
@@ -87,17 +78,22 @@ if (!Util::isEmpty($email) && !Util::isEmpty($password)) {
                     <div class="panel-heading">
                         <h3 class="panel-title">Register</h3>
                     </div>
-                    <div class="panel-body panel-height">
-                        <p class="lead text-muted"> Don't have an account yet? </p>
-                        <p class="text-muted"> Get access to convenient community features. </p>                        
+                    <div class="panel-body panel-height text-muted">
+                        <p class="lead"> Don't have an account yet? </p>
+                        <p> Get access to</p>
+                        <ul >
+                            <li> Finances </li>
+                            <li> Menuplan </li>
+                            <li> Shopping List </li>
+                            <li> Blackboard </li>
+                            <li> many more convenient features </li>
+                        </ul>
                     </div>
                     <div class="panel-footer">
                         <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#register-dialog">Register</button>                        
                     </div>
                 </div>
             </div>
-
-            
         </div>
     </div>
 
@@ -110,32 +106,20 @@ if (!Util::isEmpty($email) && !Util::isEmpty($password)) {
                 </div>
                 <div class="modal-body">
                     <p class="lead text-muted"> Community </p>
-                    <div class="form-group" id="register-community-name-form-group">
-                        <input class="form-control" placeholder="Community-Name" id="register-community-name" name="community-name" type="text" autofocus maxlength="50">
-                    </div>
-                    <div class="form-group" id="register-community-description-form-group">
-                        <textarea class="form-control" rows="3" placeholder="Description"  id="register-community-description" maxlength="500"></textarea>
-                    </div>
+                    <?php
+                        FormGenerator::createTextField("community-name", "Name", true);
+                        FormGenerator::createTextarea("community-description", 3, "Description");
+                    ?>
                     <p class="lead text-muted"> About you </p>
-
-                    <div class="form-group" id="register-firstname-form-group">
-                        <input type="text" id="register-firstname" class="form-control" placeholder="First Name" maxlength="50">
-                    </div>
-                    <div class="form-group" id="register-lastname-form-group">
-                        <input type="text" id="register-lastname" class="form-control" placeholder="Last Name" maxlength="50">
-                    </div>
-                    <div class="form-group input-group" id="register-email-form-group">
-                        <span class="input-group-addon">@</span>
-                        <input type="text" id="register-email" class="form-control" placeholder="E-Mail" maxlength="200">
-                    </div>
-                    <div class="form-group" id="register-password-form-group">
-                        <input type="password" id="register-password" class="form-control" placeholder="Password" maxlength="32">
-                    </div>
-                    <div class="form-group" id="register-password-confirm-form-group">
-                        <input type="password" id="register-password-confirm" class="form-control" placeholder="Confirm Password" maxlength="32">
-                    </div>
+                    <?php 
+                        FormGenerator::createTextField("firstname", "First Name");
+                        FormGenerator::createTextField("lastname", "Last Name");
+                        FormGenerator::createEmailField("email", "E-Mail");
+                        FormGenerator::createPasswordField("password", "Password");
+                        FormGenerator::createPasswordField("password-confirm", "Confirm");
+                    ?>
                     <div class="alert alert-danger" id="alert-incorrect-data">
-                        We are sorry, some fields contain incorrect information.
+                        <?php echo Resources::$invalid_entries; ?>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -152,92 +136,97 @@ if (!Util::isEmpty($email) && !Util::isEmpty($password)) {
 
         $(document).ready(function() {
             $("#alert-incorrect-data").hide();
-            $("#register-community-name").popover({content: "Community name must not be empty", trigger: "focus", placement:"bottom"});
-            $("#register-password-confirm").popover({content: "Repeat your password", trigger: "focus", placement: "bottom"});
-            $("#register-password").popover({content: "Passwords must be at least 8 characters long", trigger: "focus", placement: "bottom"});
+            $("#community-name").popover({content: "Community name must not be empty", trigger: "focus", placement:"bottom"});
+            $("#password-confirm").popover({content: "Repeat your password", trigger: "focus", placement: "bottom"});
+            $("#password").popover({content: "Passwords must be at least 8 characters long", trigger: "focus", placement: "bottom"});
             $("#button-register").click(validateRegisterForm);
 
-            $("#register-community-name").focusout(validateCommunityName);
-            $("#register-firstname").focusout(validateFirstName);
-            $("#register-lastname").focusout(validateLastName);
-            $("#register-email").focusout(validateEmail);
-            $("#register-password").focusout(validatePassword);
-            $("#register-password-confirm").focusout(validatePasswordConfirm);
+            $("#community-name").focusout(validateCommunityName);
+            $("#firstname").focusout(validateFirstName);
+            $("#lastname").focusout(validateLastName);
+            $("#email").focusout(validateEmail);
+            $("#password").focusout(validatePassword);
+            $("#password-confirm").focusout(validatePasswordConfirm);
 
+            $("#login-email").val("<?php echo Util::isEmpty($email) ? "" : $email; ?>");
+
+            $("#alert-login-incorrect").hide();
             <?php if (!$login_valid) { ?>
-                $(".form-group-login").addClass("has-error");
+                $("#login-email-form-group").addClass("has-error");
+                $("#login-password-form-group").addClass("has-error");
+                $("#alert-login-incorrect").show();
             <?php } ?>
         });
 
         function validateCommunityName() {
-            var communityName = $("#register-community-name");
+            var communityName = $("#community-name");
             if (communityName.val().length === 0) {
-                $("#register-community-name-form-group").addClass("has-error");
+                $("#community-name-form-group").addClass("has-error");
             } else {
-                $("#register-community-name-form-group").removeClass("has-error");
+                $("#community-name-form-group").removeClass("has-error");
             }
             return communityName.val().length !== 0;
         }
 
         function validateFirstName() {
-            var firstName = $("#register-firstname");
+            var firstName = $("#firstname");
             if (!isValidName(firstName.val())) {
-                $("#register-firstname-form-group").addClass("has-error");
+                $("#firstname-form-group").addClass("has-error");
             } else {
-                $("#register-firstname-form-group").removeClass("has-error");
+                $("#firstname-form-group").removeClass("has-error");
             }
             return isValidName(firstName.val());
         }
 
         function validateLastName() {
-            var lastName = $("#register-lastname");
+            var lastName = $("#lastname");
             if (!isValidName(lastName.val())) {
-                $("#register-lastname-form-group").addClass("has-error");
+                $("#lastname-form-group").addClass("has-error");
             } else {
-                $("#register-lastname-form-group").removeClass("has-error");
+                $("#lastname-form-group").removeClass("has-error");
             }
             return isValidName(lastName.val());
         }
 
         function validateEmail() {
-            var email = $("#register-email");
+            var email = $("#email");
             if (!isValidEmailAddress(email.val())) {
-                $("#register-email-form-group").addClass("has-error");
+                $("#email-form-group").addClass("has-error");
             } else {
-                $("#register-email-form-group").removeClass("has-error");
+                $("#email-form-group").removeClass("has-error");
             }
             return isValidEmailAddress(email.val());
         }
 
         function validatePassword(){
-            var password = $("#register-password");
+            var password = $("#password");
             if (password.val().length < 8) {
-                $("#register-password-form-group").addClass("has-error");
+                $("#password-form-group").addClass("has-error");
             } else {
-                $("#register-password-form-group").removeClass("has-error");
+                $("#password-form-group").removeClass("has-error");
             }
             return password.val().length >= 8;
         }
 
         function validatePasswordConfirm() {
-            var passwordConfirm = $("#register-password-confirm");
-            var password = $("#register-password");
+            var passwordConfirm = $("#password-confirm");
+            var password = $("#password");
             if (password.val() !== passwordConfirm.val() || passwordConfirm.val().length === 0) {
-                $("#register-password-confirm-form-group").addClass("has-error");
+                $("#password-confirm-form-group").addClass("has-error");
             } else {
-                $("#register-password-confirm-form-group").removeClass("has-error");
+                $("#password-confirm-form-group").removeClass("has-error");
             }
             return password.val() === passwordConfirm.val();
         }
 
         function validateRegisterForm() {
-            var communityName = $("#register-community-name");
-            var communityDescription = $("#register-community-description");
-            var firstName = $("#register-firstname");
-            var lastName = $("#register-lastname");
-            var email = $("#register-email");
-            var password = $("#register-password");
-            var passwordConfirm = $("#register-password-confirm");
+            var communityName = $("#community-name");
+            var communityDescription = $("#community-description");
+            var firstName = $("#firstname");
+            var lastName = $("#lastname");
+            var email = $("#email");
+            var password = $("#password");
+            var passwordConfirm = $("#password-confirm");
 
             validateCommunityName();
             validateFirstName();
@@ -268,12 +257,21 @@ if (!Util::isEmpty($email) && !Util::isEmpty($password)) {
                         user_password_confirm: passwordConfirm.val()
                     },
                     dataType: "json"
-                }).done(function() {
-                    // Util::redirect("Dashboard.php");
-                    window.location.replace("Dashboard.php");
+                }).done(function(data) {
+                    var errorDiv = $("#alert-incorrect-data");
+                    var message;
+                    if (!data) {
+                        message = "<?php echo Resources::$unknown_error; ?>";
+                    } else if (!data.success) {
+                        message = data.result;
+                    } else {
+                        window.location.replace("Dashboard.php");
+                        return;
+                    }
+                    errorDiv.text(message).show();      
                 }).fail(function(jqXhr, status, error) {
-                    console.log(jqXhr, status, error);
-                    // toDo Error Message
+                    console.log("error");
+                    $("#alert-incorrect-data").text("<?php echo Resources::$unknown_error; ?>").show();
                 });
             } else {
                 $("#alert-incorrect-data").show();

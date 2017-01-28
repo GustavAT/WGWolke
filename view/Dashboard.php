@@ -1,5 +1,7 @@
 <?php
 require_once("../code/PrintHelper.php");
+require_once("../code/Resources.php");
+require_once("../code/FormGenerator.php");
 require_once("../code/SessionHelper.php");
 require_once("../code/Util.php");
 require_once("../dao/DaoFactory.php");
@@ -7,16 +9,19 @@ require_once("../dao/DaoFactory.php");
 SessionHelper::doActivity();
 $user_oid = SessionHelper::getCurrentUserOid();
 if ($user_oid === null) {
-    Util::redirect("index.php");
+    SessionHelper::logOut();
+    Util::redirect("index.php?error=0");
 }
 
 $user = DaoFactory::createUserDao()->getById($user_oid);
 if ($user === null) {
+    SessionHelper::logOut();
     Util::redirect("index.php?error=1");
 }
 
 $community = DaoFactory::createCommunityDao()->getByUserOid($user_oid);
 if ($community === null) {
+    SessionHelper::logOut();
     Util::redirect("index.php?error=2");
 }
 
@@ -89,17 +94,10 @@ $newsFeeds = DaoFactory::createNewsFeedDao()->getByCommunity($community->getObje
                                 </button> 
                             </h3>
                         </li>
-                        <li>
-                                                   
-                                       
-                        </li>
-
                         <?php
-
                             foreach($newsFeeds as $newsFeed) {
                                 PrintHelper::printNewsFeedItem($newsFeed);
                             }
-
                         ?>
                     </ul>
                 </div>
@@ -109,7 +107,6 @@ $newsFeeds = DaoFactory::createNewsFeedDao()->getByCommunity($community->getObje
         <div id="page-wrapper">
             <br />
             <div class="row">
-
                 <?php
                     foreach($modules as $module) {
                         if ($module->getType() === 1 && !$user->isOwner()) continue;
@@ -130,14 +127,13 @@ $newsFeeds = DaoFactory::createNewsFeedDao()->getByCommunity($community->getObje
                     <h4 class="modal-title" id="blackboardTitle">New Entry</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group" id="blackboard-title-form-group">
-                        <input class="form-control" placeholder="Title" id="blackboard-title" name="blackboard-title" type="text" autofocus maxlength="50">
-                    </div>
-                    <div class="form-group" id="blackboard-message-form-group">
-                        <textarea id="blackboard-message" class="form-control" rows="3" placeholder="Message" maxlength="200"></textarea>
-                    </div>
+                    <?php
+                        FormGenerator::createTextField("bb-title", "Title", true);
+                        FormGenerator::createTextArea("bb-message", 3, "Message", false, 200);
+                    ?>
                     <div class="alert alert-danger" id="alert-incorrect-data">
-                        We are sorry, some fields contain incorrect information.
+                        <?php echo Resources::$invalid_entries; ?>
+                        
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -154,8 +150,8 @@ $newsFeeds = DaoFactory::createNewsFeedDao()->getByCommunity($community->getObje
 
         $(document).ready(function() {
             $("#alert-incorrect-data").hide();
-            $("#blackboard-title").popover({content: "Title must not be empty", trigger: "focus", placement:"bottom"});
-            $("#blackboard-title").focusout(validateTitle);
+            $("#bb-title").popover({content: "Title must not be empty", trigger: "focus", placement:"bottom"});
+            $("#bb-title").focusout(validateTitle);
             $("#button-create").click(validateBlackboardForm);
             $("#button-google-it").click(searchGoogle);
 
@@ -167,12 +163,11 @@ $newsFeeds = DaoFactory::createNewsFeedDao()->getByCommunity($community->getObje
         });
 
         function validateBlackboardForm() {
-            var title = $("#blackboard-title");
-            var message = $("#blackboard-message");
+            var title = $("#bb-title");
+            var message = $("#bb-message");
 
             validateTitle();
             var isValid = validateTitle();
-
             if (isValid) {
                 $("#alert-incorrect-data").hide();
                 $.ajax({
@@ -185,11 +180,20 @@ $newsFeeds = DaoFactory::createNewsFeedDao()->getByCommunity($community->getObje
                         user_oid: "<?php echo $user_oid ?>"
                     },
                     dataType: "json"
-                }).done(function() {
-                    // Util::redirect("Dashboard.php");
-                    window.location.replace("Dashboard.php");
+                }).done(function(data) {
+                    var errorDiv = $("#alert-incorrect-data");
+                    var message;
+                    if (!data) {
+                        message = "<?php echo Resources::$unknown_error; ?>";
+                    } else if (!data.success) {
+                        message = data.result;
+                    } else {
+                        window.location.replace("Dashboard.php");
+                        return;
+                    }
+                    errorDiv.text(message).show();
                 }).fail(function(jqXhr, status, error) {
-                    console.log(jqXhr, status, error);
+                    $("#alert-incorrect-data").text("<?php echo Resources::$unknown_error; ?>").show();
                 });
             } else {
                 $("#alert-incorrect-data").show();
@@ -197,11 +201,11 @@ $newsFeeds = DaoFactory::createNewsFeedDao()->getByCommunity($community->getObje
         }
 
         function validateTitle() {
-            var title = $("#blackboard-title");
+            var title = $("#bb-title");
             if (title.val().length === 0) {
-                $("#blackboard-title-form-group").addClass("has-error");
+                $("#bb-title-form-group").addClass("has-error");
             } else {
-                $("#blackboard-title-form-group").removeClass("has-error");
+                $("#bb-title-form-group").removeClass("has-error");
             }
             return title.val().length !== 0;
         }

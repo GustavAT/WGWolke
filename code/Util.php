@@ -47,4 +47,12 @@ class Util {
     public static function redirect($url) {
         header("Location: ./" . $url);
     }
+
+    public static function setCookie($name, $value, $expires = 0) {
+        setcookie($name, $value, $expires);
+    }
+
+    public static function parseCookie($item) {
+        return isset($_COOKIE[$item]) ? $_COOKIE[$item] : "";
+    }
 }

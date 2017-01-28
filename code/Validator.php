@@ -1,4 +1,5 @@
 <?php
+require_once("../dao/DaoFactory.php");
 
 class Validator {
 
@@ -18,6 +19,12 @@ class Validator {
 
     public static function isValidEmail($email) {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
+    }
+
+    public static function isEmailUnique($email) {
+        $user = DaoFactory::createUserDao()->getByEmail($email);
+        if ($user === null) return true;
+        return false;
     }
 
     public static function isValidPassword($password) {

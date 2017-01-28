@@ -4,6 +4,7 @@ require_once("../dao/DaoFactory.php");
 require_once("Validator.php");
 require_once("Util.php");
 require_once("SessionHelper.php");
+require_once("Resources.php");
 
 $community_name = Util::parsePost("community_name");
 $community_description = Util::parsePost("community_description");
@@ -23,7 +24,10 @@ $valid_user = Validator::isValidField($user_first_name)
     && Validator::isValidPassword($user_password)
     && Validator::equals($user_password, $user_password_confirm);
 
-if ($valid_community && $valid_user) {
+$email_unique = Validator::isEmailUnique($user_email);
+
+
+if ($valid_community && $valid_user && $email_unique) {
 
         $modules = DaoFactory::createModuleDao()->getAll();
 
@@ -46,6 +50,8 @@ if ($valid_community && $valid_user) {
         SessionHelper::setCurrentUserOid($user->getObjectId());
 
         echo '{"result": "", "success": true}';
+} else if (!$email_unique) {
+    echo '{"result": "' . Resources::$duplicate_email . '", "success": false}';
 } else {
-    echo '{"result": "", "success": false"}';
+    echo '{"result": "' . Resources::$unknown_error . '", "success": false}';
 }
