@@ -57,6 +57,18 @@ textarea {
     color: white;
 }
 
+.logo-center {
+    height: 100px;
+    width: 100%;
+    background: url(../images/wg_wolke.png) no-repeat center center;
+}
+
+.nothing-center {
+    height: 300px;
+    width: 100%;
+    background: url(../images/nothing.gif) no-repeat center center;
+}
+
 /** icons **/
 .icon-finances {
     background-image: url("../images/mones-icon.png");

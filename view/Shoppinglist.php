@@ -129,7 +129,7 @@ $items = DaoFactory::createTodoItemDao()->getByCommunity($community->getObjectId
                     }
                 ],
                 language: {
-                    zeroRecords: '<div style="height: 300px; width: 100%; background: url(../images/nothing.gif) no-repeat center center;"></div>'
+                    zeroRecords: '<div class="nothing-center"></div>'
                 }             
             });
 

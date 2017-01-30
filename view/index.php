@@ -41,8 +41,8 @@ if ($login) {
     
     <div class="container">
         <div class="row">
-            <div class="col-md-6 col-md-offset-3 text-center">
-                <img src="../images/wg_wolke.png" class="img-responsive text-center" alt="WG Wolke Logo">
+            <div class="col-md-12 logo-center">
+                <!--<img src="../images/wg_wolke.png" class="img-responsive text-center" alt="WG Wolke Logo">-->
             </div>
         </div>
         <div class="row">
