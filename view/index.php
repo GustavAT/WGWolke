@@ -47,7 +47,7 @@ if ($login) {
         </div>
         <div class="row">
             <div class="col-md-6">
-                <form role="form" method="POST" action="index.php?login=1"> <!-- onsubmit="return checkLoginForm()"-->
+                <form role="form" method="POST" action="index.php?login=1">
                     <div class="login-panel panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">Login</h3>
@@ -141,12 +141,12 @@ if ($login) {
             $("#password").popover({content: "Passwords must be at least 8 characters long", trigger: "focus", placement: "bottom"});
             $("#button-register").click(validateRegisterForm);
 
-            $("#community-name").focusout(validateCommunityName);
-            $("#firstname").focusout(validateFirstName);
-            $("#lastname").focusout(validateLastName);
-            $("#email").focusout(validateEmail);
-            $("#password").focusout(validatePassword);
-            $("#password-confirm").focusout(validatePasswordConfirm);
+            $("#community-name").focusout(function() {validateField("community-name")});
+            $("#firstname").focusout(function() {validateField("firstname")});
+            $("#lastname").focusout(function() {validateField("lastname")});
+            $("#email").focusout(function() {validateEmailField("email")});
+            $("#password").focusout(function() {validatePasswordField("password")});
+            $("#password-confirm").focusout(function() {validatePasswordEquals("password", "password-confirm")});
 
             $("#login-email").val("<?php echo Util::isEmpty($email) ? "" : $email; ?>");
 
@@ -158,67 +158,6 @@ if ($login) {
             <?php } ?>
         });
 
-        function validateCommunityName() {
-            var communityName = $("#community-name");
-            if (communityName.val().length === 0) {
-                $("#community-name-form-group").addClass("has-error");
-            } else {
-                $("#community-name-form-group").removeClass("has-error");
-            }
-            return communityName.val().length !== 0;
-        }
-
-        function validateFirstName() {
-            var firstName = $("#firstname");
-            if (!isValidName(firstName.val())) {
-                $("#firstname-form-group").addClass("has-error");
-            } else {
-                $("#firstname-form-group").removeClass("has-error");
-            }
-            return isValidName(firstName.val());
-        }
-
-        function validateLastName() {
-            var lastName = $("#lastname");
-            if (!isValidName(lastName.val())) {
-                $("#lastname-form-group").addClass("has-error");
-            } else {
-                $("#lastname-form-group").removeClass("has-error");
-            }
-            return isValidName(lastName.val());
-        }
-
-        function validateEmail() {
-            var email = $("#email");
-            if (!isValidEmailAddress(email.val())) {
-                $("#email-form-group").addClass("has-error");
-            } else {
-                $("#email-form-group").removeClass("has-error");
-            }
-            return isValidEmailAddress(email.val());
-        }
-
-        function validatePassword(){
-            var password = $("#password");
-            if (password.val().length < 8) {
-                $("#password-form-group").addClass("has-error");
-            } else {
-                $("#password-form-group").removeClass("has-error");
-            }
-            return password.val().length >= 8;
-        }
-
-        function validatePasswordConfirm() {
-            var passwordConfirm = $("#password-confirm");
-            var password = $("#password");
-            if (password.val() !== passwordConfirm.val() || passwordConfirm.val().length === 0) {
-                $("#password-confirm-form-group").addClass("has-error");
-            } else {
-                $("#password-confirm-form-group").removeClass("has-error");
-            }
-            return password.val() === passwordConfirm.val();
-        }
-
         function validateRegisterForm() {
             var communityName = $("#community-name");
             var communityDescription = $("#community-description");
@@ -228,19 +167,19 @@ if ($login) {
             var password = $("#password");
             var passwordConfirm = $("#password-confirm");
 
-            validateCommunityName();
-            validateFirstName();
-            validateLastName();
-            validateEmail();
-            validatePassword();
-            validatePasswordConfirm();
+            validateField("community-name");
+            validateField("firstname");
+            validateField("lastname");
+            validateEmailField("email");
+            validatePasswordField("password");
+            validatePasswordEquals("password-confirm");
 
-            var isValid = validateCommunityName()
-                && validateFirstName()
-                && validateLastName()
-                && validateEmail()
-                && validatePassword()
-                && validatePasswordConfirm();
+            var isValid = validateField("community-name")
+                && validateField("firstname")
+                && validateField("lastname")
+                && validateEmailField("email")
+                && validatePasswordField("password")
+                && validatePasswordEquals("password", "password-confirm");
             
             if (isValid) {
                 $("#alert-incorrect-data").hide();
@@ -270,24 +209,12 @@ if ($login) {
                     }
                     errorDiv.text(message).show();      
                 }).fail(function(jqXhr, status, error) {
-                    console.log("error");
                     $("#alert-incorrect-data").text("<?php echo Resources::$unknown_error; ?>").show();
                 });
             } else {
                 $("#alert-incorrect-data").show();
             }
         }
-
-        function isValidEmailAddress(emailAddress) {
-            var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
-            return pattern.test(emailAddress);
-        };
-
-        function isValidName(name) {
-            var pattern = /^[^±!@£$%^&*_+§¡€#¢§¶•ªº«\\/<>?:;|=.,]{1,20}$/;
-            return pattern.test(name);
-        };
-
     </script>
 </body>
 </html>

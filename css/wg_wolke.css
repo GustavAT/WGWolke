@@ -27,13 +27,39 @@ textarea {
     padding: 10px;
 }
 
+.btn-left {
+    float: left;
+}
+
+.btn-black {
+    background-color: #444444;
+    border-color: #333333;
+    color: white;
+}
+
+.btn-black:hover{
+    background-color: #222222;
+    border-color: #111111;
+    color: white;
+}
+
+.selected {
+    background-color: #08C;
+    color: white;
+}
+
+.selected:hover {
+    background-color: #08C !important;
+    color: white;
+}
+
 /** icons **/
 .icon-finances {
     background-image: url("../images/mones-icon.png");
 }
 
 .icon-member {
-    background-image: url("../images/user-icon.png");
+    background-image: url("../images/users-icon.png");
 }
 
 .icon-menuplan {
@@ -46,5 +72,13 @@ textarea {
 
 .icon-shopping {
     background-image: url("../images/shopping-icon.png");
+}
+
+.icon-user {
+    background-image: url("../images/user-icon.png");
+}
+
+.icon-user-owner {
+    background-image: url("../images/user-owner-icon.png");
 }
 

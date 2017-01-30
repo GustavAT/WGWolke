@@ -22,7 +22,8 @@ class ToDoItemDao extends AbstractDao {
 
     public function getByCommunity($community_oid) {
         $sql = ToDoItemDao::getBaseSql();
-        $sql->where("td.community_oid = ?");
+        $sql->where("td.community_oid = ? and td.is_finished = 0");
+        $sql->orderBy("td.date_created desc");
         
         $records = Datenbarsch::getInstance()->fishQuery($sql, "s", $community_oid);
         $todo_items = [];

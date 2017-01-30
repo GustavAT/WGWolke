@@ -7,4 +7,24 @@ class Resources {
     public static $unknown_error = "We are sorry, an unknown error occured. Please try again!";
     
     public static $welcome_message = "Hey there, welcome back!";
+    public static $text_view_details = "View Details";
+    public static $text_name = "Name";
+    public static $text_date_created = "Date Created";
+
+    public static $title_dashboard = "Dashboard";
+    public static $title_member = "Member";
+    public static $title_new_entry = "New Entry";
+    public static $title_shoppinglist = "Shoppinglist";
+
+    public static $button_cancel = "Cancel";
+    public static $button_create = "Create";
+    public static $button_delete = "Delete";
+    public static $button_done = "Done";
+    public static $button_login = "Login";
+    public static $button_toggle_locked = "Toggle Locked";
+    public static $button_register = "Register";
+    public static $button_edit = "Edit";
+    public static $button_create_user = "New User";
+    public static $button_create_todo = "New Item";
+    public static $button_assign_ownership = "Assign Ownership";
 }

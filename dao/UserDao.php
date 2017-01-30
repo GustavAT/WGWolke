@@ -105,7 +105,7 @@ class UserDao extends AbstractDao{
         $sql = new Sql();
         $sql->select("u.oid");
         $sql->from("user u");
-        $sql->where("u.email = ? and u.password = ?");
+        $sql->where("u.email = ? and u.password = ? and u.is_locked = 0");
         $result = Datenbarsch::getInstance()->fishQuery($sql, "ss", $email, $password);
         if (mysqli_num_rows($result) > 0) {
             return mysqli_fetch_assoc($result)["oid"];
