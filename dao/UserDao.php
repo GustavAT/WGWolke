@@ -37,12 +37,12 @@ class UserDao extends AbstractDao{
         }
 
         return $users;
-
     }
 
     public function getByCommunity($community_oid) {
         $sql = UserDao::getBaseSql();
         $sql->where("u.community_oid = ?");
+        $sql->orderBy("u.is_owner desc");
         
         $records = Datenbarsch::getInstance()->fishQuery($sql, "s", $community_oid);
         $users = [];

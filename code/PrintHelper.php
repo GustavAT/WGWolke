@@ -52,6 +52,7 @@ class PrintHelper {
             case 2:
                 $icon = "icon-finances";
                 $module_color = "green";
+                $value = "€ 42,02";
                 break;
             case 3:
                 $icon = "icon-menuplan";
@@ -176,7 +177,7 @@ class PrintHelper {
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav in" id="side-menu">
+                    <ul class="nav in padding-small" id="side-menu">
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
                                 <input id="input-google-it" class="form-control" placeholder="Google it!" type="text">

@@ -11,12 +11,16 @@ textarea {
     cursor: pointer;
 }
 
-
 .scaling-normal {    
     height: 70px;
     width: 70px;
     background-size: 70px 70px;
 }
+
+.padding-small {
+    padding: 5px;
+}
+
 /** button **/
 .btn-offset {
     margin-top: -2.5px !important;
