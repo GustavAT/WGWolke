@@ -128,7 +128,7 @@ class PrintHelper {
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <div class="<?php echo "shopping-icon "; ?> scaling-normal">
+                        <div class="<?php echo "icon-todo "; ?> scaling-normal">
                         </div>
                     </div>
                     <div class="col-xs-9 text-right">
