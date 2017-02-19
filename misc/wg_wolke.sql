@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 19. Jan 2017 um 21:34
+-- Erstellungszeit: 19. Feb 2017 um 19:53
 -- Server-Version: 10.1.19-MariaDB
--- PHP-Version: 5.6.28
+-- PHP-Version: 7.0.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `community` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
-  `date_created` DATETIME DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
   `description` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Community';
@@ -41,7 +41,7 @@ CREATE TABLE `community` (
 
 CREATE TABLE `dish_item` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
-  `date_created` DATETIME DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
   `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -54,8 +54,8 @@ CREATE TABLE `dish_item` (
 
 CREATE TABLE `dish_item_entry` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
-  `date_created` DATETIME DEFAULT NULL,
-  `dish_date` DATETIME DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
+  `dish_date` datetime DEFAULT NULL,
   `dish_item_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `user_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -68,7 +68,7 @@ CREATE TABLE `dish_item_entry` (
 
 CREATE TABLE `dish_tag` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
-  `date_created` DATETIME DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
   `color` varchar(7) NOT NULL DEFAULT '#FF0000',
   `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
@@ -94,7 +94,7 @@ CREATE TABLE `dish_tag_item` (
 
 CREATE TABLE `entity_blob_content` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
-  `date_created` DATETIME DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
   `data` blob
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -106,7 +106,7 @@ CREATE TABLE `entity_blob_content` (
 
 CREATE TABLE `entity_blob_entry` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
-  `date_created` DATETIME DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
   `file_type` varchar(10) NOT NULL DEFAULT '*.*',
   `file_size` int(11) NOT NULL DEFAULT '0',
   `entity_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
@@ -121,10 +121,10 @@ CREATE TABLE `entity_blob_entry` (
 
 CREATE TABLE `finance_item` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
-  `date_created` DATETIME DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
-  `date_accrued` DATETIME DEFAULT NULL,
-  `date_completed` DATETIME DEFAULT NULL,
+  `date_accrued` datetime DEFAULT NULL,
+  `date_completed` datetime DEFAULT NULL,
   `amount` decimal(10,0) NOT NULL DEFAULT '0',
   `completed` tinyint(1) NOT NULL DEFAULT '0',
   `edited` tinyint(1) NOT NULL DEFAULT '0',
@@ -152,7 +152,7 @@ CREATE TABLE `finance_item_user` (
 
 CREATE TABLE `module` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
-  `date_created` DATETIME DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
   `type` int(11) NOT NULL DEFAULT '0',
   `name` varchar(50) DEFAULT NULL,
   `price` decimal(10,0) NOT NULL DEFAULT '0'
@@ -163,10 +163,10 @@ CREATE TABLE `module` (
 --
 
 INSERT INTO `module` (`oid`, `date_created`, `type`, `name`, `price`) VALUES
-('195fd0d9-dc09-11e6-9082-1c1b0d05ba41', '2017-01-16', 2, 'Finances', '0'),
-('195fd938-dc09-11e6-9082-1c1b0d05ba41', '2017-01-16', 3, 'Menuplan', '0'),
-('195fe056-dc09-11e6-9082-1c1b0d05ba41', '2017-01-16', 4, 'Shopping List', '0'),
-('195fe768-dc09-11e6-9082-1c1b0d05ba41', '2017-01-16', 1, 'Member', '0');
+('195fd0d9-dc09-11e6-9082-1c1b0d05ba41', '2017-01-16 00:00:00', 2, 'Finances', '0'),
+('195fd938-dc09-11e6-9082-1c1b0d05ba41', '2017-01-16 00:00:00', 3, 'Menuplan', '0'),
+('195fe056-dc09-11e6-9082-1c1b0d05ba41', '2017-01-16 00:00:00', 4, 'Shopping List', '0'),
+('195fe768-dc09-11e6-9082-1c1b0d05ba41', '2017-01-16 00:00:00', 1, 'Member', '0');
 
 -- --------------------------------------------------------
 
@@ -188,11 +188,26 @@ CREATE TABLE `module_community` (
 
 CREATE TABLE `news_feed_item` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
-  `date_created` DATETIME DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
   `title` varchar(50) DEFAULT NULL,
   `message` varchar(500) DEFAULT NULL,
-  `expiration_date` DATETIME DEFAULT NULL,
+  `expiration_date` datetime DEFAULT NULL,
   `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
+  `user_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `todo_entry`
+--
+
+CREATE TABLE `todo_entry` (
+  `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
+  `date_created` datetime DEFAULT NULL,
+  `todo_list_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
+  `description` varchar(50) DEFAULT NULL,
+  `is_finished` tinyint(1) NOT NULL DEFAULT '0',
   `user_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -204,10 +219,37 @@ CREATE TABLE `news_feed_item` (
 
 CREATE TABLE `todo_item` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
-  `date_created` DATETIME DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
   `description` varchar(50) NOT NULL DEFAULT '',
   `is_finished` tinyint(1) NOT NULL DEFAULT '0',
   `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
+  `user_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `todo_list`
+--
+
+CREATE TABLE `todo_list` (
+  `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
+  `date_created` datetime DEFAULT NULL,
+  `list_name` varchar(50) DEFAULT NULL,
+  `community_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
+  `creator_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `todo_list_user`
+--
+
+CREATE TABLE `todo_list_user` (
+  `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
+  `date_created` datetime DEFAULT NULL,
+  `todo_list_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   `user_oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -219,7 +261,7 @@ CREATE TABLE `todo_item` (
 
 CREATE TABLE `user` (
   `oid` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
-  `date_created` DATETIME DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
   `email` varchar(200) DEFAULT NULL,
   `password` varchar(32) DEFAULT NULL,
   `first_name` varchar(50) DEFAULT NULL,
@@ -308,10 +350,29 @@ ALTER TABLE `news_feed_item`
   ADD PRIMARY KEY (`oid`);
 
 --
+-- Indizes für die Tabelle `todo_entry`
+--
+ALTER TABLE `todo_entry`
+  ADD PRIMARY KEY (`oid`);
+
+--
 -- Indizes für die Tabelle `todo_item`
 --
 ALTER TABLE `todo_item`
   ADD PRIMARY KEY (`oid`);
+
+--
+-- Indizes für die Tabelle `todo_list`
+--
+ALTER TABLE `todo_list`
+  ADD PRIMARY KEY (`oid`);
+
+--
+-- Indizes für die Tabelle `todo_list_user`
+--
+ALTER TABLE `todo_list_user`
+  ADD PRIMARY KEY (`oid`),
+  ADD UNIQUE KEY `todo_list_oid` (`todo_list_oid`,`user_oid`);
 
 --
 -- Indizes für die Tabelle `user`
