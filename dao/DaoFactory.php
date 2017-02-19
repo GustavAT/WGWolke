@@ -3,7 +3,8 @@ require_once("UserDao.php");
 require_once("CommunityDao.php");
 require_once("ModuleDao.php");
 require_once("NewsFeedDao.php");
-require_once("ToDoItemDao.php");
+require_once("ToDoListDao.php");
+require_once("ToDoEntryDao.php");
 require_once("FinanceDao.php");
 require_once("DishTagDao.php");
 require_once("DishItemDao.php");
@@ -29,8 +30,12 @@ class DaoFactory {
         return NewsFeedDao::getInstance();
     }
 
-    public static function createToDoItemDao() {
-        return ToDoItemDao::getInstance();
+    public static function createToDoListDao() {
+        return ToDoListDao::getInstance();
+    }
+
+    public static function createToDoEntryDao() {
+        return ToDoEntryDao::getInstance();
     }
 
     public static function createFinanceDao() {

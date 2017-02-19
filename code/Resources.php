@@ -10,11 +10,14 @@ class Resources {
     public static $text_view_details = "View Details";
     public static $text_name = "Name";
     public static $text_date_created = "Date Created";
+    public static $text_details = "Details";
 
     public static $title_dashboard = "Dashboard";
     public static $title_member = "Member";
     public static $title_new_entry = "New Entry";
     public static $title_shoppinglist = "Shoppinglist";
+    public static $title_todo_overview = "ToDo Overview";
+    public static $title_todo_list = "ToDo List";
 
     public static $button_cancel = "Cancel";
     public static $button_create = "Create";
@@ -27,4 +30,6 @@ class Resources {
     public static $button_create_user = "New User";
     public static $button_create_todo = "New Item";
     public static $button_assign_ownership = "Assign Ownership";
+
+    public static $button_create_todo_list = "Create ToDo list";
 }

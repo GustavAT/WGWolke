@@ -62,7 +62,7 @@ class PrintHelper {
             case 4:
                 $icon = "icon-shopping";
                 $module_color = "yellow";
-                $url = "Shoppinglist.php";
+                $url = "ToDoList.php";
                 $value = self::getShoppinglistCount();
                 break;
         }
@@ -120,6 +120,29 @@ class PrintHelper {
                     </div>
                 </a>
             <?php } ?>
+        </div>
+    <?php }
+
+    public static function printListTile($todo_list, $user_oid) { ?>
+        <div class="panel panel-<?php echo $todo_list->getCreatorOid() == $user_oid ? "yellow" : "primary"; ?>">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="<?php echo "shopping-icon "; ?> scaling-normal">
+                        </div>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge"> <?php echo htmlspecialchars($todo_list->getListName()); ?> </div>                        
+                    </div>
+                </div>                
+            </div>    
+            <a href="./ToDoListDetails.php?list= <?php echo $todo_list->getObjectId(); ?>">
+                <div class="panel-footer">
+                    <span class="pull-left"><?php echo Resources::$text_details; ?></span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
         </div>
     <?php }
 
@@ -251,16 +274,17 @@ class PrintHelper {
 
     private static function getShoppinglistCount() {
         $count = 0;
-        $user_oid = SessionHelper::getCurrentUserOid();
-        if ($user_oid !== null) {
-            $community = DaoFactory::createCommunityDao()->getByUserOid($user_oid);
-            if ($community) {
-                $items = DaoFactory::createTodoItemDao()->getByCommunity($community->getObjectId());
-                if ($items !== null) {
-                    $count = count($items);
-                }
-            }
-        }
+        // $user_oid = SessionHelper::getCurrentUserOid();
+        // if ($user_oid !== null) {
+        //     $community = DaoFactory::createCommunityDao()->getByUserOid($user_oid);
+        //     if ($community) {
+        //         $items = DaoFactory::createTodoItemDao()->getByCommunity($community->getObjectId());
+        //         if ($items !== null) {
+        //             $count = count($items);
+        //         }
+        //     }
+        // }
+        // todo
         return $count;
     }
 }

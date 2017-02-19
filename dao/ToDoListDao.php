@@ -61,7 +61,7 @@ class ToDoListDao extends AbstractDao {
         $sql->where("tlu.user_oid = ?");
         
         $records = Datenbarsch::getInstance()->fishQuery($sql, "s", $member_oid);
-        $todo_items = [];
+        $todo_lists = [];
 
         if (mysqli_num_rows($records) > 0) {
             while ($row = $records->fetch_assoc()) {
@@ -76,7 +76,7 @@ class ToDoListDao extends AbstractDao {
         $sql = ToDoListDao::getBaseSql();
         $sql->where("tl.creator_oid = ?");
         
-        $records = Datenbarsch::getInstance()->fishQuery($sql, "s", $user_oid);
+        $records = Datenbarsch::getInstance()->fishQuery($sql, "s", $creator_oid);
         $todo_lists = [];
 
         if (mysqli_num_rows($records) > 0) {
@@ -85,7 +85,7 @@ class ToDoListDao extends AbstractDao {
             }
         }
 
-        return $todo_Lists;
+        return $todo_lists;
     }
 
     public function getById($oid) {
