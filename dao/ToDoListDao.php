@@ -49,9 +49,29 @@ class ToDoListDao extends AbstractDao {
         $sql = new Sql();
         $sql->delete();
         $sql->from("todo_list_user tlu");
-        $sql->where("tlu.todo_list_oid = ? and tlu.user_oid = ?");
+        if (isset($member_oid)) {
+            $sql->where("tlu.todo_list_oid = ? and tlu.user_oid = ?");
+            Datenbarsch::getInstance()->fishQuery($sql, "ss", $todo_list_oid, $member_oid);
+        } else {
+            $sql->where("tlu.todo_list_oid = ?");
+            Datenbarsch::getInstance()->fishQuery($sql, "s", $todo_list_oid);
+        }
+    }
 
-        Datenbarsch::getInstance()->fishQuery($sql, "ss", $todo_list_oid, $member_oid);
+    public function getByCommunityOid($community_oid) {
+        $sql = ToDoListDao::getBaseSql();
+        $sql->where("tl.community_oid = ?");
+        
+        $records = Datenbarsch::getInstance()->fishQuery($sql, "s", $community_oid);
+        $todo_lists = [];
+
+        if (mysqli_num_rows($records) > 0) {
+            while ($row = $records->fetch_assoc()) {
+                array_push($todo_lists, ToDoList::fromRecord($row));
+            }
+        }
+
+        return $todo_lists;
     }
 
     public function getByMemberOid($member_oid) {

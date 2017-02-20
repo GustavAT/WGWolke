@@ -1,5 +1,6 @@
 <?php
 require_once("Entity.php");
+require_once("../code/Resources.php");
 
 class ToDoList extends Entity {
     private $community_oid;
@@ -37,4 +38,27 @@ class ToDoList extends Entity {
     public function toString() {
         return $this->list_name;
     }
+
+    public function createView($user_oid) { ?>
+        <div class="panel panel-<?php echo $this->creator_oid == $user_oid ? "yellow" : "primary"; ?>">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="<?php echo "icon-todo "; ?> scaling-normal">
+                        </div>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge"> <?php echo htmlspecialchars($this->list_name); ?> </div>                        
+                    </div>
+                </div>                
+            </div>    
+            <a href="./ToDoListDetails.php?list=<?php echo $this->object_id; ?>">
+                <div class="panel-footer">
+                    <span class="pull-left"><?php echo Resources::$text_details; ?></span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    <?php }
 }

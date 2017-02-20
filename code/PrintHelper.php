@@ -32,6 +32,7 @@ class PrintHelper {
         <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>    
     <?php }
 
+// TODO move to Module.php
     public static function printModule($module) {
         $title = $module->getName();
 
@@ -95,69 +96,6 @@ class PrintHelper {
                 </a>
             </div>
         </div>
-    <?php }
-
-    public static function printUserTile($user, $url) { ?>
-        <div class="panel panel-<?php echo $user->isOwner() ? "yellow" : ($user->isLocked() ? "default" : "primary"); ?>">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <div class="<?php echo $user->isOwner() ? "icon-user-owner" : "icon-user" ?> scaling-normal">
-                        </div>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge"> <?php echo htmlspecialchars($user->getFirstName()) . " " . htmlspecialchars($user->getLastName()); ?> </div>
-                        <div> <?php echo htmlspecialchars($user->getEmail()); ?> </div>
-                    </div>
-                </div>
-            </div>
-            <?php if(!$user->isOwner()) { ?>
-                <a id="<?php echo $user->getObjectId(); ?>" data-toggle="modal" data-target="<?php echo $url; ?>" onclick="window.globalUserOid = '<?php echo $user->getObjectId(); ?>'; window.globalUserLocked = <?php echo $user->isLocked(); ?>; $('#button-assign-ownership').toggle(!globalUserLocked);">
-                    <div class="panel-footer">
-                        <span class="pull-left"><?php echo Resources::$button_edit; ?></span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            <?php } ?>
-        </div>
-    <?php }
-
-    public static function printListTile($todo_list, $user_oid) { ?>
-        <div class="panel panel-<?php echo $todo_list->getCreatorOid() == $user_oid ? "yellow" : "primary"; ?>">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <div class="<?php echo "icon-todo "; ?> scaling-normal">
-                        </div>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge"> <?php echo htmlspecialchars($todo_list->getListName()); ?> </div>                        
-                    </div>
-                </div>                
-            </div>    
-            <a href="./ToDoListDetails.php?list= <?php echo $todo_list->getObjectId(); ?>">
-                <div class="panel-footer">
-                    <span class="pull-left"><?php echo Resources::$text_details; ?></span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
-        </div>
-    <?php }
-
-    public static function printNewsFeedItem($item) { ?>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="text-center"> <?php echo $item->getTitle(); ?> </h4>
-            </div>
-            <div class="panel-body">                
-                <p> <?php echo $item->getMessage(); ?> </p>
-                <h6 class="text-right text-muted"> <?php echo $item->getDateCreated(); ?> </h6>
-            </div>
-        </div>
-
     <?php }
 
     public static function printNavBar($title, $user, $community) {        
@@ -274,17 +212,16 @@ class PrintHelper {
 
     private static function getShoppinglistCount() {
         $count = 0;
-        // $user_oid = SessionHelper::getCurrentUserOid();
-        // if ($user_oid !== null) {
-        //     $community = DaoFactory::createCommunityDao()->getByUserOid($user_oid);
-        //     if ($community) {
-        //         $items = DaoFactory::createTodoItemDao()->getByCommunity($community->getObjectId());
-        //         if ($items !== null) {
-        //             $count = count($items);
-        //         }
-        //     }
-        // }
-        // todo
+        $user_oid = SessionHelper::getCurrentUserOid();
+        if ($user_oid !== null) {
+            $community = DaoFactory::createCommunityDao()->getByUserOid($user_oid);
+            if ($community) {
+                $items = DaoFactory::createToDoListDao()->getByCommunityOid($community->getObjectId());
+                if ($items !== null) {
+                    $count = count($items);
+                }
+            }
+        }
         return $count;
     }
 }

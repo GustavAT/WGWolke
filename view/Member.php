@@ -70,14 +70,14 @@ $secondhalf = array_slice($users, $length / 2);
                     </div>
                     <?php
                         foreach ($firsthalf as $community_user) {
-                            PrintHelper::printUserTile($community_user, "#edit-user-dialog");
+                            $community_user->createView("#edit-user-dialog");
                         }                    
                     ?>
                 </div>
                 <div class="col-lg-6">
                     <?php
                         foreach ($secondhalf as $community_user) {
-                            PrintHelper::printUserTile($community_user, "#edit-user-dialog");
+                            $community_user->createView("#edit-user-dialog");
                         }
                     ?>
                 </div>

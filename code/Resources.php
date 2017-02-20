@@ -5,6 +5,8 @@ class Resources {
     public static $duplicate_email = "Given email is already taken.";
     public static $login_not_successful = "Email or password is incorrect.";
     public static $unknown_error = "We are sorry, an unknown error occured. Please try again!";
+    public static $not_supported = "We are sorry, this operation is not supported!";
+    public static $permission_denied = "We are sorry, but you do not have permission to do that!";
     
     public static $welcome_message = "Hey there, welcome back!";
     public static $text_view_details = "View Details";
@@ -17,7 +19,7 @@ class Resources {
     public static $title_new_entry = "New Entry";
     public static $title_shoppinglist = "Shoppinglist";
     public static $title_todo_overview = "ToDo Overview";
-    public static $title_todo_list = "ToDo List";
+    public static $title_new_list = "New List";
 
     public static $button_cancel = "Cancel";
     public static $button_create = "Create";
@@ -28,8 +30,7 @@ class Resources {
     public static $button_register = "Register";
     public static $button_edit = "Edit";
     public static $button_create_user = "New User";
-    public static $button_create_todo = "New Item";
     public static $button_assign_ownership = "Assign Ownership";
 
-    public static $button_create_todo_list = "Create ToDo list";
+    public static $button_create_list = "Create a new list";
 }

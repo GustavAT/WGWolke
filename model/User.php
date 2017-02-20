@@ -62,4 +62,30 @@ class User extends Entity {
     public function toString() {
         return $this->first_name . " " . $this->last_name . " " . ($this->is_owner ? "*" : "");
     }
+
+    public function createView($url) { ?>
+        <div class="panel panel-<?php echo $this->is_owner ? "yellow" : ($this->is_locked ? "default" : "primary"); ?>">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="<?php echo $this->is_owner ? "icon-user-owner" : "icon-user" ?> scaling-normal">
+                        </div>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge"> <?php echo htmlspecialchars($this->first_name) . " " . htmlspecialchars($this->last_name); ?> </div>
+                        <div> <?php echo htmlspecialchars($this->email); ?> </div>
+                    </div>
+                </div>
+            </div>
+            <?php if(!$this->is_owner) { ?>
+                <a id="<?php echo $this->object_id; ?>" data-toggle="modal" data-target="<?php echo $url; ?>" onclick="window.globalUserOid = '<?php echo $this->object_id; ?>'; window.globalUserLocked = <?php echo $this->is_locked; ?>; $('#button-assign-ownership').toggle(!globalUserLocked);">
+                    <div class="panel-footer">
+                        <span class="pull-left"><?php echo Resources::$button_edit; ?></span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            <?php } ?>
+        </div>
+    <?php }
 }

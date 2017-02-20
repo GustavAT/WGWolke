@@ -43,7 +43,6 @@ $secondhalf = array_slice($all_lists, $length / 2);
 <html>
 <head>
     <?php PrintHelper::includeCSS(); ?>
-    <?php PrintHelper::includeDataTablesCSS(); ?>
     <title> <?php echo Resources::$title_todo_overview; ?> </title>
     <script type="text/javascript">
         window.phpVars = [];        
@@ -64,9 +63,9 @@ $secondhalf = array_slice($all_lists, $length / 2);
             <div class="row">
                 <div class="col-lg-6">
                     <div class="panel panel-green">
-                        <a data-toggle="modal" data-target="#new-todo-list-dialog">
+                        <a data-toggle="modal" data-target="#create-list-dialog">
                             <div class="panel-body">
-                                <span class="pull-left"><?php echo Resources::$button_create_todo_list; ?></span>
+                                <span class="pull-left"><?php echo Resources::$button_create_list; ?></span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                 <div class="clearfix"></div>
                             </div>
@@ -74,14 +73,14 @@ $secondhalf = array_slice($all_lists, $length / 2);
                     </div>
                     <?php
                         foreach ($firsthalf as $todo_list) {
-                            PrintHelper::printListTile($todo_list, $user_oid);
+                            $todo_list->createView($user_oid);
                         }                    
                     ?>
                 </div>
                 <div class="col-lg-6">
                     <?php
-                        foreach ($secondhalf as $todo_list) {
-                            PrintHelper::printListTile($todo_list, $user_oid);
+                        foreach ($secondhalf as $todo_list) {                            
+                            $todo_list->createView($user_oid);
                         }
                     ?>
                 </div>
@@ -90,132 +89,75 @@ $secondhalf = array_slice($all_lists, $length / 2);
         </div>
     </div>
 
-    <!--<div class="modal fade" id="create-todo-dialog" tabindex="-1" role="dialog" aria-labelledby="newTodoDialog" aria-hidden="true">
+    <div class="modal fade" id="create-list-dialog" tabindex="-1" role="dialog" aria-labelledby="createListDialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="newTodoDialog"><?php echo Resources::$button_create_todo; ?></h4>
+                    <h4 class="modal-title" id="newTodoDialog"><?php echo Resources::$title_new_list; ?></h4>
                 </div>
                 <div class="modal-body">
                     <?php 
-                        FormGenerator::createTextField("title", "Title", true);                        
+                        FormGenerator::createTextField("name", "Name", true);
                     ?>
-                    <div class="alert alert-danger" id="alert-incorrect-todo-data">
+                    <div class="alert alert-danger" id="alert-incorrect-list-data">
                         <?php echo Resources::$invalid_entries; ?>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo Resources::$button_cancel; ?></button>
-                    <button type="button" class="btn btn-primary" id="button-save-todo"><?php echo Resources::$button_create; ?></button>
+                    <button type="button" class="btn btn-primary" id="button-create-list"><?php echo Resources::$button_create; ?></button>
                 </div>
             </div>
         </div>
-    </div>-->
+    </div>
 
     <?php PrintHelper::createBlackBoardDialog(); ?>
     <?php PrintHelper::includeJS(); ?>
-    <?php PrintHelper::includeDataTablesJS(); ?>
 
     <script type="text/javascript">
-        // var dataTable = null;
-        // $("#alert-incorrect-todo-data").hide();
-        // $("#title").focusout(function() {validateField("title")});
-        // $("#button-save-todo").click(validateTodoForm);
+        $(document).ready(function() {
+            initNavBar();
 
-        // $("#button-done").addClass("disabled");
-        // $("#button-done").click(doneSelectedItems);
-        
-        // $(document).ready(function() {
-        //     dataTable = $("#table").DataTable({
-        //         ordering: true,
-        //         paging: false,
-        //         select: true,
-        //         columnDefs: [
-        //             {
-        //                 targets: [2],
-        //                 visible: false,
-        //                 searchable: false
-        //             }
-        //         ],
-        //         language: {
-        //             zeroRecords: '<div class="nothing-center"></div>'
-        //         }             
-        //     });
+            $("#alert-incorrect-list-data").hide();
+            $("#name").popover({content: "Enter list name", trigger: "focus", placement: "bottom"});
+            $("#name").focusout(function() {validateField("name")});            
+            $("#button-create-list").click(validateListForm);
+        });
 
-        //     $("#table tbody").on("click", "tr", function() {
-        //         $(this).toggleClass("selected");
-                
-        //         var selected = $("#table .selected");
-        //         if (selected.length > 0) {
-        //             $("#button-done").removeClass("disabled");
-        //         } else {
-        //             $("#button-done").addClass("disabled");
-        //         }                
-        //     })
+        function validateListForm() {
+            var name = $("#name");
+            var isValid = validateField("name");
 
-        // });
-
-        // function doneSelectedItems() {
-        //     var rows = dataTable.rows(".selected").data();
-        //     var ids = rows.map(function(record) {
-        //         return record[2];
-        //     });
-        //     if (ids.length > 0) {
-        //         $.ajax({
-        //             url: "../handler/FinishTodo.php",
-        //             type: "POST",
-        //             data: {
-        //                 ids: ids.join(";"),
-        //             },
-        //             dataType: "json"
-        //         }).done(function(data) {
-        //             if (data && data.success) {
-        //                 dataTable.rows(".selected").remove().draw(false);
-        //             }     
-        //         });
-        //     }
-        // }
-
-        // function validateTodoForm() {
-        //     var title = $("#title");
-        //     var isValid = validateField("title");
-
-        //     if (isValid) {
-        //         $("#alert-incorrect-todo-data").hide();
-        //         $.ajax({
-        //             url: "../handler/CreateTodo.php",
-        //             type: "POST",
-        //             data: {
-        //                 user_oid: "<?php echo $user->getObjectId();?>",
-        //                 community_oid: "<?php echo $community->getObjectId();?>",
-        //                 title: title.val()
-        //             },
-        //             dataType: "json"
-        //         }).done(function(data) {
-        //             var errorDiv = $("#alert-incorrect-todo-data");
-        //             var message;
-        //             if (!data) {
-        //                 message = "<?php echo Resources::$unknown_error; ?>";
-        //             } else if (!data.success) {
-        //                 message = data.result;
-        //             } else {
-        //                 dataTable.row.add([
-        //                     data.result.title,
-        //                     data.result.dateCreated,
-        //                     data.result.oid
-        //                 ]).draw(false);
-        //                 $("#title").val("");
-        //                 $("#create-todo-dialog").modal("hide");
-        //                 return;
-        //             }
-        //             errorDiv.text(message).show();      
-        //         }).fail(function(jqXhr, status, error) {
-        //             $("#alert-incorrect-todo-data").text("<?php echo Resources::$unknown_error; ?>").show();
-        //         });
-        //     }
-        // }       
-
+            if (isValid) {
+                $("#alert-incorrect-list-data").hide();
+                $.ajax({
+                    url: "../handler/ListHandler.php",
+                    type: "POST",
+                    data: {
+                        mode: 1,
+                        user_oid: window.phpVars.userOid,
+                        community_oid: window.phpVars.communityOid,
+                        name: name.val()
+                    },
+                    dataType: "json",                    
+                }).done(function(data) {
+                    var errorDiv = $("#alert-incorrect-list-data");
+                    var message;
+                    if (!data) {
+                        message = window.phpVars.unknownError;
+                    } else if (!data.success) {
+                        message = data.result;
+                    } else {
+                        window.location.replace("ToDoEntry.php?id=" + data.result);
+                        return;
+                    }
+                    errorDiv.text(message).show();
+                }).fail(function(jqXhr, status, error) {
+                    $("#alert-incorrect-list-data").text(window.phpVars.unknownError).show();
+                });
+            }
+        }      
     </script>
 </body>
 </html>

@@ -47,4 +47,16 @@ class NewsFeedItem extends Entity {
     public function toString() {
         return $this->title . " " . $this->expiration_date;
     }
+
+    public function createView() { ?>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="text-center"> <?php echo $this->title; ?> </h4>
+            </div>
+            <div class="panel-body">                
+                <p> <?php echo $this->message; ?> </p>
+                <h6 class="text-right text-muted"> <?php echo $this->date_created; ?> </h6>
+            </div>
+        </div>
+    <?php }
 }
