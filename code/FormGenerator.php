@@ -49,4 +49,23 @@ class FormGenerator {
                 maxlength="32">
         </div>
     <?php }
+
+    public static function createSelectList($id, $label = "", $key_value_pairs, $autofocus = false, $multi_select = false) { ?>
+        <div class="form-group" id="<?php echo $id; ?>-form-group">
+            <label><?php echo $label; ?></label>
+            <select class="form-control"
+                name="<?php echo $id; ?>"
+                id="<?php echo $id; ?>"
+                <?php echo $autofocus ? "autofocus" : ""; ?>
+                <?php echo $multi_select ? "multiple" : ""; ?> >
+                <?php
+                    foreach ($key_value_pairs as $key => $value) {
+                        echo '<option value="' . $key . '">' . $value . "</options>";
+                    }
+
+                ?>
+            </select>
+
+        </div>
+    <?php }
 }

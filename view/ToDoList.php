@@ -25,8 +25,6 @@ if ($community === null) {
     Util::redirect("index.php?error=2");
 }
 
-
-
 $list_dao = DaoFactory::createTodoListDao();
 $my_lists = $list_dao->getByCreatorOid($user_oid);
 $other_lists = $list_dao->getByMemberOid($user_oid);
@@ -36,6 +34,15 @@ $all_lists = array_merge($my_lists, $other_lists);
 $length = count($all_lists);
 $firsthalf = array_slice($all_lists, 0, $length / 2);
 $secondhalf = array_slice($all_lists, $length / 2);
+
+$member_list = DaoFactory::createUserDao()->getByCommunity($community->getObjectId());
+$other_users = [];
+
+foreach ($member_list as $value) {
+    if ($value->getObjectId() != $user_oid && !$value->isLocked()) {
+        $other_users[$value->getObjectId()] = $value->getFirstName() . " " . $value->getLastName();
+    }
+}
 
 ?>
 
@@ -99,6 +106,7 @@ $secondhalf = array_slice($all_lists, $length / 2);
                 <div class="modal-body">
                     <?php 
                         FormGenerator::createTextField("name", "Name", true);
+                        FormGenerator::createSelectList("users", "Member", $other_users, false, true);
                     ?>
                     <div class="alert alert-danger" id="alert-incorrect-list-data">
                         <?php echo Resources::$invalid_entries; ?>
@@ -127,6 +135,7 @@ $secondhalf = array_slice($all_lists, $length / 2);
 
         function validateListForm() {
             var name = $("#name");
+            var member = $("#users");
             var isValid = validateField("name");
 
             if (isValid) {
@@ -138,7 +147,8 @@ $secondhalf = array_slice($all_lists, $length / 2);
                         mode: 1,
                         user_oid: window.phpVars.userOid,
                         community_oid: window.phpVars.communityOid,
-                        name: name.val()
+                        name: name.val(),
+                        member_oids: member.val().join(",")
                     },
                     dataType: "json",                    
                 }).done(function(data) {

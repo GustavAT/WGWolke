@@ -158,7 +158,8 @@ class PrintHelper {
                         </li>
                         <?php
                             foreach($newsFeeds as $newsFeed) {
-                                self::printNewsFeedItem($newsFeed);
+                                // self::printNewsFeedItem($newsFeed);
+                                $newsFeed->createView();
                             }
                         ?>
                     </ul>

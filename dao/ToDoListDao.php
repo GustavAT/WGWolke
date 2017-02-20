@@ -42,7 +42,7 @@ class ToDoListDao extends AbstractDao {
         $sql = new Sql();
         $sql->insertInto("todo_list_user", ["oid", "date_created", "todo_list_oid", "user_oid"]);
         Datenbarsch::getInstance()->fishQuery($sql, "ssss",
-            Utilty::newGuid(), Utiliy::now(), $todo_list_oid, $member_oid);
+            Util::newGuid(), Util::now(), $todo_list_oid, $member_oid);
     }
 
     public function removeMember($todo_list_oid, $member_oid) {
