@@ -14,16 +14,37 @@ $member_oids_raw = Util::parsePost("member_oids");
 $list_dao = DaoFactory::createToDoListDao();
 
 if ($mode == 1) {
-    // create list
+    // update / save
     $valid = Validator::isValidField($name);
     if ($valid) {
-        $list = new ToDoList(null, null, $community_oid, $name, $user_oid);
-        $list_dao->save($list);
+        $list = null;
+        if ($list_oid != null) {
+            $list = $list_dao->getById($list_oid);
+        }
 
+        if ($list === null) {
+            $list = new ToDoList(null, null, $community_oid, $name, $user_oid);
+        } else {
+            $list->setListName($name);
+        }
+
+        $list_dao->save($list);
+        $list_oid = $list->getObjectId();
+
+        $existing_oids = $list_dao->getMemberOids($list_oid);
         $member_oids = explode(",", $member_oids_raw);
 
+
         foreach ($member_oids as $value) {
-            $list_dao->addMember($list->getObjectId(), $value);
+            if (!in_array($value, $existing_oids)) {
+                $list_dao->addMember($list_oid, $value);                
+            }
+        }
+
+        foreach ($existing_oids as $value) {
+            if (!in_array($value, $member_oids)) {
+                $list_dao->removeMember($list_oid, $value);
+            }
         }
 
         echo '{"result": "' . $list->getObjectId() . '", "success": true}';
@@ -31,24 +52,6 @@ if ($mode == 1) {
         echo '{"result": "' . Resources::$unknown_error . '", "success": false}';
     }
 } else if ($mode == 2) {
-    // update member list
-    $existing_oids = $list_dao->getMemberOids($list_oid);
-    $member_oids = explode(",", $member_oids_raw);
-
-    foreach ($member_oids as $value) {
-        if (!in_array($value, $existing_oids)) {
-            $list_dao->addMember($list_oid, $value);
-        }
-    }
-
-    foreach ($existing_oids as $value) {
-        if (!in_array($value, $member_oids)) {
-            $list_dao->removeMember($list_oid, $value);
-        }
-    }
-
-    echo '{"result": "", "success": true}';
-} else if ($mode == 3) {
     // delete list
     $target_list = $list_dao->getById($list_oid);
     if ($target_list !== null && $target_list->getCreatorOid() == $user_oid) {

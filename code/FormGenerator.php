@@ -68,4 +68,24 @@ class FormGenerator {
 
         </div>
     <?php }
+
+    public static function createUserList($id, $key_value_pairs, $selected_ids = null, $label = "") { ?>
+        <div class="form-group" id="<?php echo $id; ?>-form-group">
+            <label><?php echo $label; ?></label>
+            <?php
+                foreach ($key_value_pairs as $key => $value) {
+                    echo "<div class=\"checkbox\"><label>";
+                    echo "<input type=\"checkbox\" id=\"" . $key . "\"";
+                    if ($selected_ids != null) {
+                        if (in_array($key, $selected_ids)) {
+                            echo "checked";
+                        }
+                    }
+                    echo "/>";
+                    echo htmlspecialchars($value);
+                    echo "</label></div>";
+                }
+            ?>
+        </div>
+    <?php }
 }

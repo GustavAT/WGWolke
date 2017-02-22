@@ -39,7 +39,10 @@ class ToDoList extends Entity {
         return $this->list_name;
     }
 
-    public function createView($user_oid) { ?>
+    public function createView($user_oid) {
+        $count = count(DaoFactory::createToDoEntryDao()->getByToDoListOid($this->object_id));
+
+        ?>
         <div class="panel panel-<?php echo $this->creator_oid == $user_oid ? "yellow" : "primary"; ?>">
             <div class="panel-heading">
                 <div class="row">
@@ -48,7 +51,7 @@ class ToDoList extends Entity {
                         </div>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"> <?php echo htmlspecialchars($this->list_name); ?> </div>                        
+                        <div class="huge wg-nowrap"> <?php echo htmlspecialchars($this->list_name) . ": " . $count . ""; ?> </div>                        
                     </div>
                 </div>                
             </div>    

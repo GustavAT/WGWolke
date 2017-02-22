@@ -46,8 +46,11 @@ public $test;
         $this->sql_string .= " ";
     }
 
-    public function delete() {
+    public function delete($alias = null) {
         $this->sql_string = "DELETE ";
+        if ($alias != null) {
+            $this->sql_string .= $alias . " ";
+        }
     }
 
     public function select($attributes) {

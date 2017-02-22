@@ -21,6 +21,41 @@ textarea {
     padding: 5px;
 }
 
+.wg-move-up {
+    margin-bottom: -35px;
+}
+
+.wg-nowrap {
+    white-space: nowrap;
+}
+
+/** tags **/
+
+.wg-tag {
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin-right: 4px;
+}
+
+.wg-tag-warning {
+    background-color: #f0ad4e;
+    border-color: #eea236;
+    color: white;
+}
+
+.wg-tag-primary {
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    color: white;
+}
+
+.wg-tag-default {
+    background-color: #f5f5f5;
+    border-color: #ddd;
+    color: black;
+}
+
 /** button **/
 .btn-offset {
     margin-top: -2.5px !important;

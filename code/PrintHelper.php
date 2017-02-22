@@ -61,10 +61,10 @@ class PrintHelper {
                 $value = "Wienerschnitzel";
                 break;
             case 4:
-                $icon = "icon-shopping";
+                $icon = "icon-todo";
                 $module_color = "yellow";
                 $url = "ToDoList.php";
-                $value = self::getShoppinglistCount();
+                $value = self::getTodoListCount();
                 break;
         }
 
@@ -158,7 +158,6 @@ class PrintHelper {
                         </li>
                         <?php
                             foreach($newsFeeds as $newsFeed) {
-                                // self::printNewsFeedItem($newsFeed);
                                 $newsFeed->createView();
                             }
                         ?>
@@ -196,6 +195,10 @@ class PrintHelper {
     
     <?php }
 
+    public static function printTag($content, $type) {
+        echo "<span class=\"wg-tag wg-tag-" . $type . "\">" . htmlspecialchars($content) . "</span>";
+    }
+
 
     // helper functions
     
@@ -211,7 +214,7 @@ class PrintHelper {
         return $count;
     }
 
-    private static function getShoppinglistCount() {
+    private static function getTodoListCount() {
         $count = 0;
         $user_oid = SessionHelper::getCurrentUserOid();
         if ($user_oid !== null) {

@@ -106,7 +106,7 @@ foreach ($member_list as $value) {
                 <div class="modal-body">
                     <?php 
                         FormGenerator::createTextField("name", "Name", true);
-                        FormGenerator::createSelectList("users", "Member", $other_users, false, true);
+                        FormGenerator::createUserList("users", $other_users, null, Resources::$title_member);                        
                     ?>
                     <div class="alert alert-danger" id="alert-incorrect-list-data">
                         <?php echo Resources::$invalid_entries; ?>
@@ -135,8 +135,14 @@ foreach ($member_list as $value) {
 
         function validateListForm() {
             var name = $("#name");
-            var member = $("#users");
             var isValid = validateField("name");
+
+            var memberEl = $("#users-form-group")
+                .find("input[type=checkbox]:checked");
+            var memberIds = [];
+            for (var i = memberEl.length; i-- > 0;) {
+                memberIds.push(memberEl[i].id);
+            }
 
             if (isValid) {
                 $("#alert-incorrect-list-data").hide();
@@ -148,7 +154,7 @@ foreach ($member_list as $value) {
                         user_oid: window.phpVars.userOid,
                         community_oid: window.phpVars.communityOid,
                         name: name.val(),
-                        member_oids: member.val().join(",")
+                        member_oids: memberIds.join(",")
                     },
                     dataType: "json",                    
                 }).done(function(data) {
@@ -159,7 +165,7 @@ foreach ($member_list as $value) {
                     } else if (!data.success) {
                         message = data.result;
                     } else {
-                        window.location.replace("ToDoEntry.php?id=" + data.result);
+                        window.location.replace("ToDoListDetails.php?list=" + data.result);
                         return;
                     }
                     errorDiv.text(message).show();
