@@ -218,13 +218,8 @@ class PrintHelper {
         $count = 0;
         $user_oid = SessionHelper::getCurrentUserOid();
         if ($user_oid !== null) {
-            $community = DaoFactory::createCommunityDao()->getByUserOid($user_oid);
-            if ($community) {
-                $items = DaoFactory::createToDoListDao()->getByCommunityOid($community->getObjectId());
-                if ($items !== null) {
-                    $count = count($items);
-                }
-            }
+            $count = count(DaoFactory::createToDoListDao()->getByCreatorOid($user_oid));
+            $count += count(DaoFactory::createToDoListDao()->getByMemberOid($user_oid));            
         }
         return $count;
     }
