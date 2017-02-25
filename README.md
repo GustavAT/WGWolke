@@ -13,7 +13,7 @@ ___
 
 **Project Setup**
 
-1. Download WGWolke from GitHub
+1. Download WGWolke from GitHub as zip
 2. Extract zip into *htdocs* folder of your Apache server
 
 *Note* PHP 5.x and MySql must be installed
