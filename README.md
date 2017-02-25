@@ -10,3 +10,10 @@ ___
 5. ~~Go to SQL tab, copy all insert-commands from **pma_relation.sql** into textarea and hit OK~~
 
 *The database* **wg_wolke** *is now ready for use*
+
+**Project Setup**
+
+1. Download WGWolke from GitHub
+2. Extract zip into *htdocs* folder of your Apache server
+
+*Note* PHP 5.x and MySql must be installed
