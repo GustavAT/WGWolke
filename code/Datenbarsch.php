@@ -1,5 +1,6 @@
 <?php
 require_once("Sql.php");
+require_once("Connection.php");
 /*
 * Database class
 * provides functionality for CRUD operations
@@ -12,11 +13,6 @@ class Datenbarsch {
     private $mySqliError;
     private static $instance = null;
 
-    private $host = "localhost";
-    private $username = "root";
-    private $password = "";
-    private $db_name = "wg_wolke";
-
     public static function getInstance() {
         if (self::$instance == null) {
             self::$instance = new self;
@@ -25,8 +21,8 @@ class Datenbarsch {
     }
 
     private function __construct() {
-        $this->connection = new mysqli($this->host, $this->username,
-            $this->password, $this->db_name); // , $this->port
+        $this->connection = new mysqli(DB_HOST, DB_USER,
+           DB_PASSWORD, DB_DATABASE); // , $this->port
         $this->mySqliError = mysqli_connect_error();
     }
 
