@@ -8,6 +8,7 @@ require_once("ToDoEntryDao.php");
 require_once("FinanceDao.php");
 require_once("DishTagDao.php");
 require_once("DishItemDao.php");
+require_once("DishItemEntryDao.php");
 
 /*
 * Dao Factory provides Dao-Objects for all datatables
@@ -48,5 +49,9 @@ class DaoFactory {
 
     public static function createDishItemDao() {
         return DishItemDao::getInstance();
+    }
+
+    public static function createDishItemEntryDao() {
+        return DishItemEntryDao::getInstance();
     }
 }

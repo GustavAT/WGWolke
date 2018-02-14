@@ -1,1 +1,8 @@
 code/Connection.php
+.vscode/launch.json
+composer.json
+*.lock
+vendor/composer/
+vendor/bin/
+vendor/squizlabs/
+vendor/autoload.php

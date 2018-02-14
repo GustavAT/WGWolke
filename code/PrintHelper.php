@@ -58,7 +58,8 @@ class PrintHelper {
             case 3:
                 $icon = "icon-menuplan";
                 $module_color = "red";
-                $value = "Wienerschnitzel";
+                $value = self::getTodayDish();
+                $url = "Menuplan.php";
                 break;
             case 4:
                 $icon = "icon-todo";
@@ -222,5 +223,16 @@ class PrintHelper {
             $count += count(DaoFactory::createToDoListDao()->getByMemberOid($user_oid));            
         }
         return $count;
+    }
+
+    private static function getTodayDish(){
+        $food = "Kein Essen verfügbar";
+        $user_oid = SessionHelper::getCurrentUserOid();
+        $community_oid = DaoFactory::createUserDao()->getById($user_oid)->getCommunityOid();
+        if($community_oid !==null){
+            $dish = DaoFactory::createDishItemEntryDao()->getTodayDish($community_oid);
+            $food = DaoFactory::createDishItemDao()->getById($dish->getDishItemOid()); 
+        }
+        return $food->getName();
     }
 }
