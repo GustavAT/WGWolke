@@ -83,10 +83,9 @@ if ($login) {
                         <p> Get access to</p>
                         <ul >
                             <li> Finances </li>
+                            <li> Shared To-Do Lists </li>
                             <li> Menuplan </li>
-                            <li> Shopping List </li>
                             <li> Blackboard </li>
-                            <li> many more convenient features </li>
                         </ul>
                     </div>
                     <div class="panel-footer">
