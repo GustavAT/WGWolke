@@ -15,7 +15,7 @@ $valid = Validator::isValidField($title)
     
 if ($valid) {
     $item = new NewsFeedItem(null, null, $title, $message, 
-        date("Y-m-d H:i:s + 7 days"), $community_oid ,$user_oid);
+        date("Y-m-d H:i:s", strtotime(" + 7 days")), $community_oid ,$user_oid);
     DaoFactory::createNewsFeedDao()->save($item);    
     echo '{"result": "", "success": true}';
 } else {
