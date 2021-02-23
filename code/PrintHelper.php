@@ -226,13 +226,15 @@ class PrintHelper {
     }
 
     private static function getTodayDish(){
-        $food = "Kein Essen verfügbar";
         $user_oid = SessionHelper::getCurrentUserOid();
         $community_oid = DaoFactory::createUserDao()->getById($user_oid)->getCommunityOid();
-        if($community_oid !==null){
+        if($community_oid !== null) {
             $dish = DaoFactory::createDishItemEntryDao()->getTodayDish($community_oid);
-            $food = DaoFactory::createDishItemDao()->getById($dish->getDishItemOid()); 
+            if ($dish !== null) {
+                $food = DaoFactory::createDishItemDao()->getById($dish->getDishItemOid());
+                return $food->getName();
+            }
         }
-        return $food->getName();
+        return "Kein Essen verfügbar";
     }
 }
